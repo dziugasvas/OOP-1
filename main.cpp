@@ -30,18 +30,18 @@ int main() {
 void inputas (vector <Studentas> &grupe){
     for(int ii = 0; ii < 2; ii++) {
     Studentas A;
-    cout << "Iveskite studento vardo ir pavarde: ";
+    cout << "Iveskite " << ii + 1 << "-ojo studento vardo ir pavarde: ";
     cin >> A.vardas >> A.pavarde;
-    cout << "Iveskite semestro ivertinimus. Kiek ju bus? ";
+    cout << "Iveskite studento namu darbu ivertinimus. Kiek ju bus? ";
     int n, sum = 0;
     cin >> n;
     for(int i = 0; i < n; i++) {
         int temp;
-        cout << "Iveskite " << i + 1 << "-aji pazymi is " << n << ": ";
+        cout << "Iveskite " << i + 1 << "-aji ivertinima is " << n << ": ";
         cin >> temp;
         A.paz.push_back(temp); sum += temp;
         }
-    cout << "Iveskite egzamina: "; cin >> A.egz;
+    cout << "Iveskite studento egzamino rezultata: "; cin >> A.egz;
     A.rez = sum * 1.0 / (n * 1.0) * 0.4 + A.egz * 0.6;
     grupe.push_back(A);
     A.paz.clear();
@@ -50,8 +50,11 @@ void inputas (vector <Studentas> &grupe){
 void outputas(const vector <Studentas> &grupe) {
     cout << std::fixed << std::setprecision(2);
 
+    cout << left << setw(20) << "Vardas" << left << setw(20) << "Pavarde" << setw(10) << "Galutinis (Vid.)" << endl;
+    cout << string(55, '-') << endl;
+
     for(const auto& A: grupe){
-        cout << left << setw(10) << A.vardas << left << setw(20) << A.pavarde;
-        cout << setw(10) << A.rez;
+        cout << left << setw(20) << A.vardas << left << setw(20) << A.pavarde;
+        cout << setw(10) << A.rez << endl;
     }
 }
