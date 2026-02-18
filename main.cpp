@@ -30,6 +30,13 @@ int main() {
     cout << "Skaiciuoti pagal vidurki (v) ar mediana (m): ";
     cin >> pasirinkimas;
 
+    while (pasirinkimas != 'v' && pasirinkimas != 'm') {
+    cin.clear();
+    cin.ignore(10000, '\n');
+    cout << "Ivedete neteisingai, iveskite (v) arba (m): ";
+    cin >> pasirinkimas;
+}
+
     inputas(grupe, pasirinkimas);
     outputas(grupe, pasirinkimas);
 }
@@ -39,16 +46,51 @@ void inputas (vector <Studentas> &grupe, char pasirinkimas){
     Studentas A;
     cout << "Iveskite " << ii + 1 << "-ojo studento vardo ir pavarde: ";
     cin >> A.vardas >> A.pavarde;
-    cout << "Iveskite studento namu darbu ivertinimus. Kiek ju bus? ";
+
     int n, sum = 0;
+
+while (true) {
+    cout << "Iveskite studento namu darbu ivertinimus. Kiek ju bus: ";
     cin >> n;
+
+    if (!cin.fail() && n > 0) {
+        break;
+    }
+
+    cin.clear();
+    cin.ignore(10000, '\n');
+    cout << "Ivedete neteisingai, bandykite dar karta!" << endl;;
+}
+
+
     for(int i = 0; i < n; i++) {
         int temp;
-        cout << "Iveskite " << i + 1 << "-aji ivertinima is " << n << ": ";
+        while (true) {
+        cout << "Iveskite " << i + 1 << "-aji ivertinima (0-10): ";
         cin >> temp;
-        A.paz.push_back(temp); sum += temp;
+
+        if (!cin.fail() && temp >= 0 && temp <= 10) break;
+
+        cin.clear();
+        cin.ignore(10000, '\n');
+        cout << "Ivedete neteisingai, bandykite dar karta!\n";
+    }
+
+        A.paz.push_back(temp); 
+        sum += temp;
         }
-    cout << "Iveskite studento egzamino rezultata: "; cin >> A.egz;
+        
+    while (true) {
+    cout << "Iveskite studento egzamino rezultata (0-10): ";
+    cin >> A.egz;
+
+    if (!cin.fail() && A.egz >= 0 && A.egz <= 10) break;
+
+    cin.clear();
+    cin.ignore(10000, '\n');
+    cout << "Ivedete neteisingai, bandykite dar karta!\n";
+}
+
     double nd_rez;
     if (pasirinkimas == 'm') {
         nd_rez = mediana(A.paz);
@@ -62,8 +104,15 @@ void inputas (vector <Studentas> &grupe, char pasirinkimas){
 void outputas(const vector <Studentas> &grupe, char pasirinkimas) {
     cout << std::fixed << std::setprecision(2);
 
-    cout << left << setw(15) << "Vardas" << left << setw(20) << "Pavarde" << setw(15) << "Galutinis (Vid.)" << endl;
-    cout << string(55, '-') << endl;
+    cout << left << setw(15) << "Vardas" << left << setw(20) << "Pavarde";
+
+    if (pasirinkimas == 'm') {
+        cout << setw(15) << "Galutinis (Med.)" << endl;
+    } else {
+        cout << setw(15) << "Galutinis (Vid.)" << endl;
+    }
+
+    cout << string(50, '-') << endl;
 
     for(const auto& A: grupe){
         cout << left << setw(15) << A.vardas << left << setw(20) << A.pavarde;
