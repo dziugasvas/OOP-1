@@ -32,7 +32,7 @@ void inputas (vector <Studentas> &grupe){
     Studentas A;
     cout << "Iveskite studento vardo ir pavarde: ";
     cin >> A.vardas >> A.pavarde;
-    cout << "Iveskite semestro ivercius. Kiek ju bus? ";
+    cout << "Iveskite semestro ivertinimus. Kiek ju bus? ";
     int n, sum = 0;
     cin >> n;
     for(int i = 0; i < n; i++) {
@@ -47,12 +47,11 @@ void inputas (vector <Studentas> &grupe){
     A.paz.clear();
     }
 }
-void outputas(const vector <Studentas> &grupe){
-    for(auto A: grupe){
+void outputas(const vector <Studentas> &grupe) {
+    cout << std::fixed << std::setprecision(2);
+
+    for(const auto& A: grupe){
         cout << left << setw(10) << A.vardas << left << setw(20) << A.pavarde;
-        //for(auto k: A.paz) cout<<setw(3)<<k;
-        //cout<<setw(5)<<A.egz;
         cout << setw(10) << A.rez;
     }
 }
-
