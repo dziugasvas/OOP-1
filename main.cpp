@@ -2,6 +2,7 @@
 #include <iomanip>
 #include <string>
 #include <vector>
+#include <algorithm>
 
 using std::string;
 using std::cin;
@@ -19,15 +20,21 @@ struct Studentas {
     double rez;
 };
 
-void inputas (vector <Studentas> &grupe);
-void outputas (const vector <Studentas> &grupe);
+void inputas (vector <Studentas> &grupe, char pasirinkimas);
+void outputas (const vector <Studentas> &grupe, char pasirinkimas);
+double mediana(const vector<int>& paz);
 int main() {
     vector <Studentas> grupe;
-    inputas(grupe);
-    outputas(grupe);
+
+    char pasirinkimas;
+    cout << "Skaiciuoti pagal vidurki (v) ar mediana (m): ";
+    cin >> pasirinkimas;
+
+    inputas(grupe, pasirinkimas);
+    outputas(grupe, pasirinkimas);
 }
 
-void inputas (vector <Studentas> &grupe){
+void inputas (vector <Studentas> &grupe, char pasirinkimas){
     for(int ii = 0; ii < 2; ii++) {
     Studentas A;
     cout << "Iveskite " << ii + 1 << "-ojo studento vardo ir pavarde: ";
@@ -42,19 +49,41 @@ void inputas (vector <Studentas> &grupe){
         A.paz.push_back(temp); sum += temp;
         }
     cout << "Iveskite studento egzamino rezultata: "; cin >> A.egz;
-    A.rez = sum * 1.0 / (n * 1.0) * 0.4 + A.egz * 0.6;
+    double nd_rez;
+    if (pasirinkimas == 'm') {
+        nd_rez = mediana(A.paz);
+    } else {
+        nd_rez = sum * 1.0 / n;
+    }
+    A.rez = 0.4 * nd_rez + 0.6 * A.egz;
     grupe.push_back(A);
-    A.paz.clear();
     }
 }
-void outputas(const vector <Studentas> &grupe) {
+void outputas(const vector <Studentas> &grupe, char pasirinkimas) {
     cout << std::fixed << std::setprecision(2);
 
-    cout << left << setw(20) << "Vardas" << left << setw(20) << "Pavarde" << setw(10) << "Galutinis (Vid.)" << endl;
+    cout << left << setw(15) << "Vardas" << left << setw(20) << "Pavarde" << setw(15) << "Galutinis (Vid.)" << endl;
     cout << string(55, '-') << endl;
 
     for(const auto& A: grupe){
-        cout << left << setw(20) << A.vardas << left << setw(20) << A.pavarde;
-        cout << setw(10) << A.rez << endl;
+        cout << left << setw(15) << A.vardas << left << setw(20) << A.pavarde;
+        cout << setw(15) << A.rez << endl;
+    }
+}
+
+double mediana(const vector<int>& paz) {
+    int n = paz.size();
+
+    if (n == 0) {
+        return 0.0;
+    }
+
+    vector <int> temp = paz;
+    std::sort(temp.begin(), temp.end());
+
+    if (n % 2 != 0) {
+        return temp[n / 2];
+    } else {
+        return (temp[n / 2 - 1] + temp[n / 2]) / 2.0;
     }
 }
