@@ -52,7 +52,7 @@ int main() {
 
         switch (p) {
             case 1:
-            cout << "dar bus daryta" << endl;
+            inputas (A, m);
             break;
 
             case 2:
@@ -88,4 +88,125 @@ int main() {
     }
     
     return 0;
+}
+
+void inputas(Studentas*& A, int& m) {
+    int ii = 0;
+
+    while (true) {
+        Studentas S;
+        ii++;
+
+        cout << "Iveskite " << ii << "-ojo studento varda ('Baigti' - baigti ivedima): ";
+        cin >> S.vardas;
+
+        if (S.vardas == "Baigti") {
+            break;
+        }
+
+        cout << "Iveskite " << ii << "-ojo studento pavarde: ";
+        cin >> S.pavarde;
+
+        int* nd_laikinas = nullptr;
+        int n = 0;
+
+        while (true) {
+            int nd;
+            cout << "Iveskite " << ii << "-ojo studento " << (n+1) << "-aji namu darbo ivertinima (1-10, 0 - baigti): ";
+            cin >> nd;
+
+            if (!cin.fail() && nd == 0) {
+                break;
+            }
+
+            if (!cin.fail() && nd >= 1 && nd <= 10) {
+                int* temp = new int[n + 1];
+                for (int j = 0; j < n; j++) {
+                    temp[j] = nd_laikinas[j];  
+                }
+
+                    temp[n] = nd;
+
+                    delete[] nd_laikinas;
+                    nd_laikinas = temp;
+                    n++;
+                } else {
+                cin.clear();
+                cin.ignore(10000, '\n');
+                cout << "Ivedete neteisingai, bandykite dar karta! (1-10, 0 - baigti)" << endl;
+            }
+        }
+
+        while (n == 0) {
+            int nd;
+            cout << "Neivestas nei vienas ND. Iveskite bent viena pazymi (1-10): ";
+            cin >> nd;
+
+            if (!cin.fail() && nd >= 1 && nd <= 10) {
+               nd_laikinas = new int[1];
+               nd_laikinas[0] = nd;
+               n = 1;
+               break;
+            }
+
+                cin.clear();
+                cin.ignore(10000, '\n');
+                cout << "Ivedete neteisingai, bandykite dar karta! (1-10)" << endl;
+            }
+
+            while (true) {
+                cout << "Iveskite studento egzamino rezultata (0-10): ";
+                cin >> S.egz;
+                
+                if (!cin.fail() && S.egz >= 0 && S.egz <= 10) {
+                    break;
+            }
+            
+            cin.clear();
+            cin.ignore(10000, '\n');
+            cout << "Ivedete neteisingai, bandykite dar karta! (0-10)" << endl;
+        }
+
+        S.kiek = n;
+        S.nd = new int[n];
+        for (int j = 0; j < n; j++) S.nd[j] = nd_laikinas[j];
+        delete[] nd_laikinas;
+        nd_laikinas = nullptr;
+
+        S.rez = 0;
+
+        
+        Studentas* tempStud = new Studentas[m + 1];
+
+        
+        for (int i = 0; i < m; i++) {
+            tempStud[i].vardas = A[i].vardas;
+            tempStud[i].pavarde = A[i].pavarde;
+            tempStud[i].egz = A[i].egz;
+            tempStud[i].rez = A[i].rez;
+
+            tempStud[i].kiek = A[i].kiek;
+            tempStud[i].nd = (A[i].kiek > 0) ? new int[A[i].kiek] : nullptr;
+            for (int j = 0; j < A[i].kiek; j++) tempStud[i].nd[j] = A[i].nd[j];
+        }
+
+        tempStud[m].vardas = S.vardas;
+        tempStud[m].pavarde = S.pavarde;
+        tempStud[m].egz = S.egz;
+        tempStud[m].rez = S.rez;
+        tempStud[m].kiek = S.kiek;
+        tempStud[m].nd = (S.kiek > 0) ? new int[S.kiek] : nullptr;
+        for (int j = 0; j < S.kiek; j++) tempStud[m].nd[j] = S.nd[j];
+
+        for (int i = 0; i < m; i++) {
+            delete[] A[i].nd;
+        }
+        delete[] A;
+
+        A = tempStud;
+        m++;
+
+        delete[] S.nd;
+        S.nd = nullptr;
+    }
 }
