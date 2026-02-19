@@ -14,6 +14,12 @@ using std::right;
 using std::setw;
 using std::endl;
 
+const string vardai[] = {"Dovydas", "Matas", "Simonas", "Rokas", "Kajus", "Dziugas", "Virgilijus", "Vitalijus", "Alan", "Aleksas", "Jonas", "Domantas", "Arvydas", "Mantyvdas", "Gvidas"};
+const string pavardes[] = {"Kazlauskas", "Buzelis", "Sabonis", "Tubelis", "Gudelis", "Macijauskas", "Alekna", "Vanagas", "Butkevicius", "Ulanovas", "Sirvydis", "Jasikevicius", "Jakucionis", "Kleiza", "Jonauskas"};
+
+const int vardu_kiek = 15;
+const int pavard_kiek = 15;
+
 struct Studentas {
     string vardas, pavarde;
     int* nd = nullptr;
@@ -25,6 +31,9 @@ struct Studentas {
 void inputas (Studentas*& A, int & m);
 void outputas (Studentas* A, int m, char pasirinkimas);
 void generuotiPazymius (Studentas*& A, int& m);
+void generuotiStudentus(Studentas*& A, int& m);
+double vidurkis(const Studentas& S);
+double mediana(const Studentas& S);
 
 int main() {
     Studentas* A = nullptr;
@@ -61,7 +70,7 @@ int main() {
             break;
 
             case 3:
-            cout << "dar bus daryta" << endl;
+            generuotiStudentus(A, m);
             break;
 
             case 4: {
@@ -70,13 +79,11 @@ int main() {
                 cin >> budas;
 
                 while (budas != 'v' && budas != 'm') {
-                    cin.clear();
-                    cin.ignore(10000, '\n');
                     cout << "Neteisinga ivestis. Iveskite 'v' arba 'm': ";
                     cin >> budas;
                 }
 
-                cout << "dar bus padaryta" << endl;
+                outputas(A, m, budas);
 
                 veikia = false;
                 break;
@@ -88,6 +95,13 @@ int main() {
         }
     }
     
+    for (int i = 0; i < m; i++) {
+    delete[] A[i].nd;
+}
+
+    delete[] A;
+    A = nullptr;
+
     return 0;
 }
 
@@ -280,5 +294,130 @@ void generuotiPazymius(Studentas*& A, int& m) {
 
         delete[] S.nd;
         S.nd = nullptr;
+    }
+}
+
+void generuotiStudentus(Studentas*& A, int& m) {
+    int mGen;
+    cout << "Iveskite studentu skaiciu (1-15): ";
+    cin >> mGen;
+
+    while (cin.fail() || mGen < 1 || mGen > 15) {
+        cin.clear();
+        cin.ignore(10000, '\n');
+        cout << "Neteisingas skaicius. Iveskite skaiciu nuo 1 iki 15: ";
+        cin >> mGen;
+    }
+
+    int kiek;
+    cout << "Iveskite namu darbu pazymiu kieki: ";
+    cin >> kiek;
+
+    while (cin.fail() || kiek <= 0) {
+        cin.clear();
+        cin.ignore(10000, '\n');
+        cout << "Neteisingas skaicius. Iveskite teigiama skaiciu: ";
+        cin >> kiek;
+    }
+
+    for (int i = 0; i < mGen; i++) {
+        Studentas S;
+
+        S.vardas = vardai[rand() % vardu_kiek];
+        S.pavarde = pavardes[rand() % pavard_kiek];
+
+        S.kiek = kiek;
+        S.nd = new int[kiek];
+        for (int j = 0; j < kiek; j++) {
+            S.nd[j] = rand() % 10 + 1;
+        }
+
+        S.egz = rand() % 10 + 1;
+        S.rez = 0;
+
+        // padidinam A (m -> m+1)
+        Studentas* tempStud = new Studentas[m + 1];
+
+        // perkopijuojam senus
+        for (int k = 0; k < m; k++) {
+            tempStud[k].vardas = A[k].vardas;
+            tempStud[k].pavarde = A[k].pavarde;
+            tempStud[k].egz = A[k].egz;
+            tempStud[k].rez = A[k].rez;
+
+            tempStud[k].kiek = A[k].kiek;
+            tempStud[k].nd = (A[k].kiek > 0) ? new int[A[k].kiek] : nullptr;
+            for (int t = 0; t < A[k].kiek; t++)
+                tempStud[k].nd[t] = A[k].nd[t];
+        }
+
+        // įdedam naują
+        tempStud[m].vardas = S.vardas;
+        tempStud[m].pavarde = S.pavarde;
+        tempStud[m].egz = S.egz;
+        tempStud[m].rez = S.rez;
+        tempStud[m].kiek = S.kiek;
+        tempStud[m].nd = new int[S.kiek];
+        for (int t = 0; t < S.kiek; t++)
+            tempStud[m].nd[t] = S.nd[t];
+
+        // išvalom seną A
+        for (int k = 0; k < m; k++)
+            delete[] A[k].nd;
+        delete[] A;
+
+        A = tempStud;
+        m++;
+
+        delete[] S.nd;
+        S.nd = nullptr;
+    }
+
+    cout << "Sugeneruoti " << mGen << " studentai." << endl;
+}
+
+double vidurkis(const Studentas& S) {
+    if (S.kiek == 0) return 0.0;
+    int sum = 0;
+    for (int i = 0; i < S.kiek; i++) sum += S.nd[i];
+    return 1.0 * sum / S.kiek;
+}
+
+double mediana(const Studentas& S) {
+    if (S.kiek == 0) return 0.0;
+
+    int* temp = new int[S.kiek];
+    for (int i = 0; i < S.kiek; i++) temp[i] = S.nd[i];
+
+    std::sort(temp, temp + S.kiek);
+
+    double rez;
+    if (S.kiek % 2 == 1) rez = temp[S.kiek / 2];
+    else rez = (temp[S.kiek / 2 - 1] + temp[S.kiek / 2]) / 2.0;
+
+    delete[] temp;
+    return rez;
+}
+
+void outputas(Studentas* A, int m, char pasirinkimas) {
+    cout << std::fixed << std::setprecision(2);
+
+    cout << left << setw(15) << "Vardas" << left << setw(20) << "Pavarde";
+
+    if (pasirinkimas == 'm') {
+        cout << setw(15) << "Galutinis (Med.)" << endl;
+    } else {
+        cout << setw(15) << "Galutinis (Vid.)" << endl;
+    }
+
+    cout << string(50, '-') << endl;
+
+    for (int i = 0; i < m; i++) {
+        cout << left << setw(15) << A[i].vardas << left << setw(20) << A[i].pavarde;
+
+        double nd_rez = (pasirinkimas == 'm') ? mediana(A[i]) : vidurkis(A[i]);
+        double galutinis = 0.4 * nd_rez + 0.6 * A[i].egz;
+
+        cout << setw(15) << galutinis << endl;
     }
 }
