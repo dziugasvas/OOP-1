@@ -16,7 +16,7 @@ using std::right;
 using std::setw;
 using std::endl;
 
-const vector<string> vardai = {"Dovydas", "Matas", "Simonas", "Rokas", "Kajus", "Dziugas", "Virgilijus", "Vitalijus", "Alan", "Aleksas", "Jonas", "Domantas", "Arvydas", "Mantyvdas", "Dovydas"};
+const vector<string> vardai = {"Dovydas", "Matas", "Simonas", "Rokas", "Kajus", "Dziugas", "Virgilijus", "Vitalijus", "Alan", "Aleksas", "Jonas", "Domantas", "Arvydas", "Mantyvdas", "Gvidas"};
 const vector<string> pavardes = {"Kazlauskas", "Buzelis", "Sabonis", "Tubelis", "Gudelis", "Macijauskas", "Alekna", "Vanagas", "Butkevicius", "Ulanovas", "Sirvydis", "Jasikevicius", "Jakucionis", "Kleiza", "Jonauskas"};
 
 struct Studentas {
@@ -26,7 +26,7 @@ struct Studentas {
     double rez;
 };
 
-void inputas (vector <Studentas> &grupe, char pasirinkimas);
+void inputas (vector <Studentas> &grupe);
 void outputas (const vector <Studentas> &grupe, char pasirinkimas);
 double mediana(const vector<int>& paz);
 double vidurkis(const vector<int>& paz);
@@ -56,7 +56,7 @@ int main() {
 
         switch (p) {
             case 1:
-            inputas (grupe, 'v');
+            inputas (grupe);
             break;
 
             case 2: {
@@ -88,17 +88,14 @@ int main() {
                     cin >> A.pavarde;
 
                     A.paz.clear();
-                    int sum = 0;
+
                     for (int i = 0; i < kiek; i++) {
                         int nd = rand() % 10 + 1;
                         A.paz.push_back(nd);
-                        sum += nd;
                     }
 
                     A.egz = rand() % 10 + 1;
-
-                    double nd_vid = sum * 1.0 / A.paz.size();
-                    A.rez = 0.4 * nd_vid + 0.6 * A.egz;
+                    A.rez = 0;
 
                     grupe.push_back(A);
 
@@ -185,7 +182,7 @@ int main() {
     return 0;
 }
 
-void inputas (vector <Studentas> &grupe, char pasirinkimas) {
+void inputas (vector <Studentas> &grupe) {
     int ii = 0;
 
     while (true) {
@@ -202,8 +199,6 @@ void inputas (vector <Studentas> &grupe, char pasirinkimas) {
         cout << "Iveskite " << ii << "-ojo studento pavarde: ";
         cin >> A.pavarde;
 
-        int sum = 0;
-
         while (true) {
             int nd;
             cout << "Iveskite " << ii << "-ojo studento " << A.paz.size() + 1 << "-aji namu darbo ivertinima (1-10, 0 - baigti): ";
@@ -215,7 +210,6 @@ void inputas (vector <Studentas> &grupe, char pasirinkimas) {
 
             if (!cin.fail() && nd >= 1 && nd <= 10) {
                 A.paz.push_back(nd);
-                sum += nd;
             } else {
                 cin.clear();
                 cin.ignore(10000, '\n');
@@ -230,7 +224,6 @@ void inputas (vector <Studentas> &grupe, char pasirinkimas) {
 
         if (!cin.fail() && nd >= 1 && nd <= 10) {
              A.paz.push_back(nd);
-             sum += nd;
              break;
         }
 
@@ -253,15 +246,7 @@ void inputas (vector <Studentas> &grupe, char pasirinkimas) {
             cout << "Ivedete neteisingai, bandykite dar karta! (0-10)" << endl;
         }
 
-        double nd_rez;
-        if (pasirinkimas == 'm') {
-            nd_rez = mediana(A.paz);
-        } else {
-            nd_rez = sum * 1.0 / A.paz.size();
-        }
-
-        A.rez = 0.4 * nd_rez + 0.6 * A.egz;
-
+        A.rez = 0;
         grupe.push_back(A);
     }
 }
@@ -282,7 +267,7 @@ void outputas(const vector <Studentas> &grupe, char pasirinkimas) {
         cout << left << setw(15) << A.vardas << left << setw(20) << A.pavarde;
         double nd_rez = (pasirinkimas == 'm') ? mediana(A.paz) : vidurkis(A.paz);
         double galutinis = 0.4 * nd_rez + 0.6 * A.egz;
-        cout << setw(15) << nd_rez << endl;
+        cout << setw(15) << galutinis << endl;
     }
 }
 
