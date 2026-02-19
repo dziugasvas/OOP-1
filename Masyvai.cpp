@@ -24,6 +24,7 @@ struct Studentas {
 
 void inputas (Studentas*& A, int & m);
 void outputas (Studentas* A, int m, char pasirinkimas);
+void generuotiPazymius (Studentas*& A, int& m);
 
 int main() {
     Studentas* A = nullptr;
@@ -56,7 +57,7 @@ int main() {
             break;
 
             case 2:
-            cout << "dar bus daryta" << endl;
+            generuotiPazymius(A, m);
             break;
 
             case 3:
@@ -205,6 +206,77 @@ void inputas(Studentas*& A, int& m) {
 
         A = tempStud;
         m++;
+
+        delete[] S.nd;
+        S.nd = nullptr;
+    }
+}
+
+void generuotiPazymius(Studentas*& A, int& m) {
+    int ii = 0;
+
+    int kiek;
+    cout << "Iveskite norima namu darbu pazymiu kieki: " << endl;
+    cin >> kiek;
+
+    while (cin.fail() || kiek <= 0) {
+        cin.clear();
+        cin.ignore(10000, '\n');
+        cout << "Ivedete neteisingai. Iveskite teigiama skaiciu" << endl;
+        cin >> kiek;
+    }
+
+    while (true) {
+        Studentas S;
+        ii++;
+
+        cout << "Iveskite " << ii << "-ojo studento varda ('Baigti' - baigti ivedima): ";
+        cin >> S.vardas;
+
+        if (S.vardas == "Baigti") {
+            break;
+        }
+
+        cout << "Iveskite " << ii << "-ojo studento pavarde: ";
+        cin >> S.pavarde;
+
+        S.kiek = kiek;
+        S.nd = new int[kiek];
+        for (int i = 0; i < kiek; i++) {
+            S.nd[i] = rand() % 10 + 1;
+        }
+
+        S.egz = rand() % 10 + 1;
+        S.rez = 0;
+
+        Studentas* tempStud = new Studentas[m + 1];
+
+        for (int i = 0; i < m; i++) {
+            tempStud[i].vardas = A[i].vardas;
+            tempStud[i].pavarde = A[i].pavarde;
+            tempStud[i].egz = A[i].egz;
+            tempStud[i].rez = A[i].rez;
+
+            tempStud[i].kiek = A[i].kiek;
+            tempStud[i].nd = (A[i].kiek > 0) ? new int[A[i].kiek] : nullptr;
+            for (int j = 0; j < A[i].kiek; j++) tempStud[i].nd[j] = A[i].nd[j];
+        }
+
+        tempStud[m].vardas = S.vardas;
+        tempStud[m].pavarde = S.pavarde;
+        tempStud[m].egz = S.egz;
+        tempStud[m].rez = S.rez;
+        tempStud[m].kiek = S.kiek;
+        tempStud[m].nd = new int[S.kiek];
+        for (int j = 0; j < S.kiek; j++) tempStud[m].nd[j] = S.nd[j];
+
+        for (int i = 0; i < m; i++) delete[] A[i].nd;
+        delete[] A;
+
+        A = tempStud;
+        m++;
+
+        cout << "Sugeneruota: " << kiek << " ND pazymiai. Egzamino pazymys = " << S.egz << endl;
 
         delete[] S.nd;
         S.nd = nullptr;
