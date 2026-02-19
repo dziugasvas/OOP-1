@@ -3,6 +3,9 @@
 #include <string>
 #include <vector>
 #include <algorithm>
+#include <cstdlib>
+#include <ctime>
+#include <cctype>
 
 using std::string;
 using std::cin;
@@ -23,25 +26,69 @@ struct Studentas {
 void inputas (vector <Studentas> &grupe, char pasirinkimas);
 void outputas (const vector <Studentas> &grupe, char pasirinkimas);
 double mediana(const vector<int>& paz);
+
 int main() {
     vector <Studentas> grupe;
+    bool veikia = true;
 
-    char pasirinkimas;
-    cout << "Skaiciuoti pagal vidurki (v) ar mediana (m): ";
-    cin >> pasirinkimas;
+    while (veikia) {
+        cout << "Pasirinkimu meniu: " << endl;
+        cout << "1 - Ivesti studentus ranka" << endl;
+        cout << "2 - Generuoti tik pazymius" << endl;
+        cout << "3 - Generuoti studentus (vardas/pavarde/pazymiai)" << endl;
+        cout << "4 - Spausdinti rezultatus ir baigti" << endl;
+    
+        int p;
+        cin >> p;
 
-    while (pasirinkimas != 'v' && pasirinkimas != 'm') {
-    cin.clear();
-    cin.ignore(10000, '\n');
-    cout << "Ivedete neteisingai, iveskite (v) arba (m): ";
-    cin >> pasirinkimas;
+        if (cin.fail()) {
+            cin.clear();
+            cin.ignore(10000, '\n');
+            cout << "Klaida: iveskite skaiciu 1-4" << endl;
+            continue;
+        }
+
+        switch (p) {
+            case 1:
+            inputas (grupe, 'v');
+            break;
+
+            case 2:
+            cout << "dar nera" << endl;
+            break;
+
+            case 3:
+            cout << "dar nera" << endl;
+            break;
+
+            case 4: {
+                char budas;
+                cout << "Kaip skaiciuoti galutini? (v - vidurkis, m - mediana): ";
+                cin >> budas;
+
+                while (budas != 'v' && budas != 'm') {
+                    cin.clear();
+                    cin.ignore(10000, '\n');
+                    cout << "Neteisinga ivestis. Iveskite 'v' arba 'm': ";
+                    cin >> budas;
+                }
+
+                outputas (grupe, budas);
+                veikia = false;
+                break;
+            }
+
+            default:
+            cout << "Neteisingas pasirinkimas. Bandykite dar karta." << endl;
+            break;
+        }
+
+
+    }
+
+    return 0;
 }
-
-    inputas(grupe, pasirinkimas);
-    outputas(grupe, pasirinkimas);
-}
-
-void inputas (vector <Studentas> &grupe, char pasirinkimas){
+void inputas (vector <Studentas> &grupe, char pasirinkimas) {
     int ii = 0;
 
     while (true) {
