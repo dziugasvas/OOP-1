@@ -16,6 +16,9 @@ using std::right;
 using std::setw;
 using std::endl;
 
+const vector<string> vardai = {"Dovydas", "Matas", "Simonas", "Rokas", "Kajus", "Dziugas", "Virgilijus", "Vitalijus", "Alan", "Aleksas", "Jonas", "Domantas", "Arvydas", "Mantyvdas", "Dovydas"};
+const vector<string> pavardes = {"Kazlauskas", "Buzelis", "Sabonis", "Tubelis", "Gudelis", "Macijauskas", "Alekna", "Vanagas", "Butkevicius", "Ulanovas", "Sirvydis", "Jasikevicius", "Jakucionis", "Kleiza", "Jonauskas"};
+
 struct Studentas {
     string vardas, pavarde;
     vector <int> paz;
@@ -26,10 +29,13 @@ struct Studentas {
 void inputas (vector <Studentas> &grupe, char pasirinkimas);
 void outputas (const vector <Studentas> &grupe, char pasirinkimas);
 double mediana(const vector<int>& paz);
+double vidurkis(const vector<int>& paz);
 
 int main() {
     vector <Studentas> grupe;
     bool veikia = true;
+
+    srand(time(NULL));
 
     while (veikia) {
         cout << "Pasirinkimu meniu: " << endl;
@@ -53,13 +59,103 @@ int main() {
             inputas (grupe, 'v');
             break;
 
-            case 2:
-            cout << "dar nera" << endl;
-            break;
+            case 2: {
+                int ii = 0;
 
-            case 3:
-            cout << "dar nera" << endl;
+                int kiek;
+                cout << "Iveskite norima namu darbu pazymiu kieki: " << endl;
+                cin >> kiek;
+
+                while (cin.fail() || kiek <= 0) {
+                    cin.clear();
+                    cin.ignore(10000, '\n');
+                    cout << "Ivedete neteisingai. Iveskite teigiama skaiciu" << endl;
+                    cin >> kiek;
+                }
+
+                while (true) {
+                    Studentas A;
+                    ii++;
+
+                    cout << "Iveskite " << ii << "-ojo studento varda ('Baigti' - baigti ivedima): ";
+                    cin >> A.vardas;
+
+                    if (A.vardas == "Baigti") {
+                        break;
+                    }
+
+                    cout << "Iveskite " << ii << "-ojo studento pavarde: ";
+                    cin >> A.pavarde;
+
+                    A.paz.clear();
+                    int sum = 0;
+                    for (int i = 0; i < kiek; i++) {
+                        int nd = rand() % 10 + 1;
+                        A.paz.push_back(nd);
+                        sum += nd;
+                    }
+
+                    A.egz = rand() % 10 + 1;
+
+                    double nd_vid = sum * 1.0 / A.paz.size();
+                    A.rez = 0.4 * nd_vid + 0.6 * A.egz;
+
+                    grupe.push_back(A);
+
+                    cout << "Sugeneruota: " << kiek << " ND pazymiai. Egzamino pazymys = " << A.egz << endl;
+                }
+
+                break;
+            }
+            
+
+            case 3: {
+            int m;
+            cout << "Iveskite studentu skaiciu (1-15): ";
+            cin >> m;
+
+            while (cin.fail() || m < 1 || m > 15) {
+                cin.clear();
+                cin.ignore(10000, '\n');
+                cout << "Neteisingas skaicius. Iveskite skaiciu nuo 1 iki 15: ";
+                cin >> m;
+            }
+
+            int kiek;
+            cout << "Iveskite namu darbu pazymiu kieki: "; 
+            cin >> kiek;
+
+            while (cin.fail() || kiek <= 0) {
+                cin.clear();
+                cin.ignore(10000, '\n');
+                cout << "Neteisingas skaicius. Iveskite teigiama skaiciu: ";
+                cin >> kiek;
+            }
+
+            for (int i = 0; i < m; i++) {
+                Studentas A;
+
+                A.vardas = vardai[rand() % vardai.size()];
+                A.pavarde = pavardes[rand() % pavardes.size()];
+
+                int sum = 0;
+                for (int j = 0; j < kiek; j++) {
+                    int nd = rand() % 10 + 1;
+                    A.paz.push_back(nd);
+                    sum += nd;
+                }
+
+                A.egz = rand() % 10 + 1;
+
+                double nd_vid = sum * 1.0 / A.paz.size();
+                A.rez = 0.4 * nd_vid + 0.6 * A.egz;
+
+                grupe.push_back(A);
+            }
+
+            cout << "Sugeneruoti " << m << " studentai." << endl;
             break;
+        }
 
             case 4: {
                 char budas;
@@ -88,6 +184,7 @@ int main() {
 
     return 0;
 }
+
 void inputas (vector <Studentas> &grupe, char pasirinkimas) {
     int ii = 0;
 
@@ -183,7 +280,9 @@ void outputas(const vector <Studentas> &grupe, char pasirinkimas) {
 
     for(const auto& A: grupe){
         cout << left << setw(15) << A.vardas << left << setw(20) << A.pavarde;
-        cout << setw(15) << A.rez << endl;
+        double nd_rez = (pasirinkimas == 'm') ? mediana(A.paz) : vidurkis(A.paz);
+        double galutinis = 0.4 * nd_rez + 0.6 * A.egz;
+        cout << setw(15) << nd_rez << endl;
     }
 }
 
@@ -203,3 +302,16 @@ double mediana(const vector<int>& paz) {
         return (temp[n / 2 - 1] + temp[n / 2]) / 2.0;
     }
 }
+
+double vidurkis(const vector<int>& paz) {
+    if (paz.empty()) {
+        return 0.0;
+    }
+    int sum = 0;
+    for (int x : paz) {
+        sum += x;
+    }
+
+    return sum * 1.0 / paz.size();
+}
+
