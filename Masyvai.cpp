@@ -85,8 +85,12 @@ int main() {
 
                 outputas(A, m, budas);
 
-                veikia = false;
-                break;
+
+                if (m == 0) {
+                    cout << "Nera ivestu studentu." << endl;
+                    veikia = false;
+                    break;
+                }
             }
 
             default:
@@ -335,10 +339,8 @@ void generuotiStudentus(Studentas*& A, int& m) {
         S.egz = rand() % 10 + 1;
         S.rez = 0;
 
-        // padidinam A (m -> m+1)
         Studentas* tempStud = new Studentas[m + 1];
 
-        // perkopijuojam senus
         for (int k = 0; k < m; k++) {
             tempStud[k].vardas = A[k].vardas;
             tempStud[k].pavarde = A[k].pavarde;
@@ -351,7 +353,6 @@ void generuotiStudentus(Studentas*& A, int& m) {
                 tempStud[k].nd[t] = A[k].nd[t];
         }
 
-        // įdedam naują
         tempStud[m].vardas = S.vardas;
         tempStud[m].pavarde = S.pavarde;
         tempStud[m].egz = S.egz;
@@ -361,7 +362,6 @@ void generuotiStudentus(Studentas*& A, int& m) {
         for (int t = 0; t < S.kiek; t++)
             tempStud[m].nd[t] = S.nd[t];
 
-        // išvalom seną A
         for (int k = 0; k < m; k++)
             delete[] A[k].nd;
         delete[] A;
