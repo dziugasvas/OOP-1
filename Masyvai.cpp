@@ -74,6 +74,12 @@ int main() {
             break;
 
             case 4: {
+
+                 if (m == 0) {
+                    cout << "Nera ivestu studentu." << endl;
+                    veikia = false;
+                    break;
+                }
                 char budas;
                 cout << "Kaip skaiciuoti galutini? (v - vidurkis, m - mediana): ";
                 cin >> budas;
@@ -84,13 +90,8 @@ int main() {
                 }
 
                 outputas(A, m, budas);
-
-
-                if (m == 0) {
-                    cout << "Nera ivestu studentu." << endl;
-                    veikia = false;
-                    break;
-                }
+                veikia = false;
+                break;
             }
 
             default:
@@ -188,7 +189,9 @@ void inputas(Studentas*& A, int& m) {
 
         S.kiek = n;
         S.nd = new int[n];
-        for (int j = 0; j < n; j++) S.nd[j] = nd_laikinas[j];
+        for (int j = 0; j < n; j++) { 
+             S.nd[j] = nd_laikinas[j];
+        }
         delete[] nd_laikinas;
         nd_laikinas = nullptr;
 
@@ -206,7 +209,9 @@ void inputas(Studentas*& A, int& m) {
 
             tempStud[i].kiek = A[i].kiek;
             tempStud[i].nd = (A[i].kiek > 0) ? new int[A[i].kiek] : nullptr;
-            for (int j = 0; j < A[i].kiek; j++) tempStud[i].nd[j] = A[i].nd[j];
+            for (int j = 0; j < A[i].kiek; j++) {
+                tempStud[i].nd[j] = A[i].nd[j];
+            }
         }
 
         tempStud[m].vardas = S.vardas;
@@ -215,7 +220,9 @@ void inputas(Studentas*& A, int& m) {
         tempStud[m].rez = S.rez;
         tempStud[m].kiek = S.kiek;
         tempStud[m].nd = (S.kiek > 0) ? new int[S.kiek] : nullptr;
-        for (int j = 0; j < S.kiek; j++) tempStud[m].nd[j] = S.nd[j];
+        for (int j = 0; j < S.kiek; j++) {
+            tempStud[m].nd[j] = S.nd[j];
+        }
 
         for (int i = 0; i < m; i++) {
             delete[] A[i].nd;
@@ -277,7 +284,9 @@ void generuotiPazymius(Studentas*& A, int& m) {
 
             tempStud[i].kiek = A[i].kiek;
             tempStud[i].nd = (A[i].kiek > 0) ? new int[A[i].kiek] : nullptr;
-            for (int j = 0; j < A[i].kiek; j++) tempStud[i].nd[j] = A[i].nd[j];
+            for (int j = 0; j < A[i].kiek; j++) {
+                tempStud[i].nd[j] = A[i].nd[j];
+            }
         }
 
         tempStud[m].vardas = S.vardas;
@@ -286,9 +295,13 @@ void generuotiPazymius(Studentas*& A, int& m) {
         tempStud[m].rez = S.rez;
         tempStud[m].kiek = S.kiek;
         tempStud[m].nd = new int[S.kiek];
-        for (int j = 0; j < S.kiek; j++) tempStud[m].nd[j] = S.nd[j];
+        for (int j = 0; j < S.kiek; j++) {
+            tempStud[m].nd[j] = S.nd[j];
+        }
 
-        for (int i = 0; i < m; i++) delete[] A[i].nd;
+        for (int i = 0; i < m; i++) {
+            delete[] A[i].nd;
+        }
         delete[] A;
 
         A = tempStud;
@@ -349,8 +362,9 @@ void generuotiStudentus(Studentas*& A, int& m) {
 
             tempStud[k].kiek = A[k].kiek;
             tempStud[k].nd = (A[k].kiek > 0) ? new int[A[k].kiek] : nullptr;
-            for (int t = 0; t < A[k].kiek; t++)
+            for (int t = 0; t < A[k].kiek; t++) {
                 tempStud[k].nd[t] = A[k].nd[t];
+            }
         }
 
         tempStud[m].vardas = S.vardas;
@@ -359,11 +373,13 @@ void generuotiStudentus(Studentas*& A, int& m) {
         tempStud[m].rez = S.rez;
         tempStud[m].kiek = S.kiek;
         tempStud[m].nd = new int[S.kiek];
-        for (int t = 0; t < S.kiek; t++)
+        for (int t = 0; t < S.kiek; t++) {
             tempStud[m].nd[t] = S.nd[t];
+        }
 
-        for (int k = 0; k < m; k++)
+        for (int k = 0; k < m; k++) {
             delete[] A[k].nd;
+        }
         delete[] A;
 
         A = tempStud;
@@ -379,21 +395,31 @@ void generuotiStudentus(Studentas*& A, int& m) {
 double vidurkis(const Studentas& S) {
     if (S.kiek == 0) return 0.0;
     int sum = 0;
-    for (int i = 0; i < S.kiek; i++) sum += S.nd[i];
+    for (int i = 0; i < S.kiek; i++) {
+        sum += S.nd[i];
+    }
     return 1.0 * sum / S.kiek;
 }
 
 double mediana(const Studentas& S) {
-    if (S.kiek == 0) return 0.0;
+    if (S.kiek == 0) {
+        return 0.0;
+    }
 
     int* temp = new int[S.kiek];
-    for (int i = 0; i < S.kiek; i++) temp[i] = S.nd[i];
+    for (int i = 0; i < S.kiek; i++) {
+        temp[i] = S.nd[i];
+    }
 
     std::sort(temp, temp + S.kiek);
 
     double rez;
-    if (S.kiek % 2 == 1) rez = temp[S.kiek / 2];
-    else rez = (temp[S.kiek / 2 - 1] + temp[S.kiek / 2]) / 2.0;
+    if (S.kiek % 2 == 1) {
+        rez = temp[S.kiek / 2];
+    }
+    else {
+        rez = (temp[S.kiek / 2 - 1] + temp[S.kiek / 2]) / 2.0;
+    }
 
     delete[] temp;
     return rez;
