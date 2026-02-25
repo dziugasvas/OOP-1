@@ -1,0 +1,11 @@
+Vardas Pavarde ND1 ND2 ND3 ND4 ND5 Egzaminas
+Jonas Jonaitis 8 9 10 7 8 9
+Ieva Ievaitė 10 9 8 9 10 10
+Mantas Mantaitis 6 7 8 5 6 8
+Dovydas Dovydaitis 9 8 7 8 9 9
+Rokas Rokaitis 5 6 7 6 5 7
+Simonas Simonaitis 7 8 9 8 7 8
+Kajus Kajaitis 4 5 6 5 4 6
+Dziugas Dziugaitis 10 10 9 9 10 10
+Arvydas Arvydaitis 6 6 7 7 6 7
+Gvidas Gvidaitis 8 7 8 9 8 9
