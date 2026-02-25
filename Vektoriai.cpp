@@ -6,6 +6,9 @@
 #include <cstdlib>
 #include <ctime>
 #include <cctype>
+#include <fstream>
+#include <sstream>
+
 
 using std::string;
 using std::cin;
@@ -15,6 +18,9 @@ using std::left;
 using std::right;
 using std::setw;
 using std::endl;
+using std::ifstream;
+using std::getline;
+using std::stringstream;
 
 const vector<string> vardai = {"Dovydas", "Matas", "Simonas", "Rokas", "Kajus", "Dziugas", "Virgilijus", "Vitalijus", "Alan", "Aleksas", "Jonas", "Domantas", "Arvydas", "Mantyvdas", "Gvidas"};
 const vector<string> pavardes = {"Kazlauskas", "Buzelis", "Sabonis", "Tubelis", "Gudelis", "Macijauskas", "Alekna", "Vanagas", "Butkevicius", "Ulanovas", "Sirvydis", "Jasikevicius", "Jakucionis", "Kleiza", "Jonauskas"};
@@ -30,6 +36,7 @@ void inputas (vector <Studentas> &grupe);
 void outputas (const vector <Studentas> &grupe, char pasirinkimas);
 double mediana(const vector<int>& paz);
 double vidurkis(const vector<int>& paz);
+void nuskaitymas(vector<Studentas>& grupe, string failas);
 
 int main() {
     vector <Studentas> grupe;
@@ -105,7 +112,6 @@ int main() {
 
                 break;
             }
-            
 
             case 3: {
             int m;
@@ -155,9 +161,13 @@ int main() {
             break;
         }
 
-            case 4: 
-            cout << "Failo nuskaitymas" << endl;
+            case 4: {
+            string failas;
+            cout << "Iveskite failo pavadinima: ";
+            cin >> failas;
+            nuskaitymas(grupe, failas);
             break;
+            }
 
             case 5: {
                 char budas;
@@ -181,7 +191,6 @@ int main() {
             break;
 
         }
-
 
     }
 
@@ -304,5 +313,44 @@ double vidurkis(const vector<int>& paz) {
     }
 
     return sum * 1.0 / paz.size();
+}
+
+void nuskaitymas(vector<Studentas>& grupe, string failas) {
+    ifstream input (failas);
+    
+    if (!input.is_open()) {
+        cout << "Nepavyko atidaryti failo: " << failas << endl;
+        return;
+    }
+
+    grupe.clear();
+
+    string eilute;
+    getline(input, eilute);
+
+    while (getline(input,eilute)) {
+        stringstream ss(eilute);
+        Studentas s;
+
+        ss >> s.vardas >> s.pavarde;
+
+        vector <int> paz;
+        int x;
+
+        while (ss >> x) {
+            paz.push_back(x);
+        }
+
+        s.egz = paz.back();
+        paz.pop_back();
+        s.paz = paz;
+        s.rez = 0;
+
+        grupe.push_back(s);
+
+    }
+
+    cout << "Nuskaityta studentu: " << grupe.size() << endl;
+
 }
 
