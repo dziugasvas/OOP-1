@@ -42,7 +42,8 @@ int main() {
         cout << "1 - Ivesti studentus ranka" << endl;
         cout << "2 - Generuoti tik pazymius" << endl;
         cout << "3 - Generuoti studentus (vardas/pavarde/pazymiai)" << endl;
-        cout << "4 - Spausdinti rezultatus ir baigti" << endl;
+        cout << "4 - Nuskaityti studentus is failo" << endl;
+        cout << "5 - Spausdinti rezultatus ir baigti" << endl;
     
         int p;
         cin >> p;
@@ -50,7 +51,7 @@ int main() {
         if (cin.fail()) {
             cin.clear();
             cin.ignore(10000, '\n');
-            cout << "Klaida: iveskite skaiciu 1-4" << endl;
+            cout << "Klaida: iveskite skaiciu 1-5" << endl;
             continue;
         }
 
@@ -154,7 +155,11 @@ int main() {
             break;
         }
 
-            case 4: {
+            case 4: 
+            cout << "Failo nuskaitymas" << endl;
+            break;
+
+            case 5: {
                 char budas;
                 cout << "Kaip skaiciuoti galutini? (v - vidurkis, m - mediana): ";
                 cin >> budas;
@@ -174,6 +179,7 @@ int main() {
             default:
             cout << "Neteisingas pasirinkimas. Bandykite dar karta." << endl;
             break;
+
         }
 
 
