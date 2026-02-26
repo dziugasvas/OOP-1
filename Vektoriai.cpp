@@ -19,6 +19,7 @@ using std::right;
 using std::setw;
 using std::endl;
 using std::ifstream;
+using std::ofstream;
 using std::getline;
 using std::stringstream;
 
@@ -37,6 +38,7 @@ void outputas (const vector <Studentas> &grupe, char pasirinkimas);
 double mediana(const vector<int>& paz);
 double vidurkis(const vector<int>& paz);
 void nuskaitymas(vector<Studentas>& grupe, string failas);
+void spausdinimas(const vector<Studentas>& grupe, char pasirinkimas);
 
 int main() {
     vector <Studentas> grupe;
@@ -181,7 +183,23 @@ int main() {
                     cin >> budas;
                 }
 
-                outputas (grupe, budas);
+                char kur;
+                cout << "Ar norite faila isvesti i terminala (t) ar i faila (f): ";
+                cin >> kur;
+
+                while (kur != 't' && kur != 'f') {
+                    cin.clear();
+                    cin.ignore(10000, '\n');
+                    cout << "Neteisinga ivestis. Iveskite 't' arba 'f': ";
+                    cin >> kur;
+                }
+
+                if (kur == 'f') {
+                    spausdinimas (grupe, budas);
+                } else {
+                    outputas (grupe, budas);
+                }
+
                 veikia = false;
                 break;
             }
@@ -354,3 +372,31 @@ void nuskaitymas(vector<Studentas>& grupe, string failas) {
 
 }
 
+void spausdinimas(const vector <Studentas>& grupe, char pasirinkimas) {
+    ofstream file("rezultatai.txt");
+
+    if (!file.is_open()) {
+        cout << "Nepavyko sukurti failo!" << endl;
+        return;
+    }
+
+    file << std::fixed << std::setprecision(2); 
+    file << left << setw(15) << "Vardas" << left << setw(20) << "Pavarde";
+
+    if (pasirinkimas == 'm') {
+        file << setw(15) << "Galutinis (Med.)" << endl;
+    } else {
+        file << setw(15) << "Galutinis (Vid.)" << endl;
+    }
+
+    file << string(50, '-') << endl;
+
+    for (const auto& A : grupe) {
+        file << left << setw(15) << A.vardas << left << setw(20) << A.pavarde;
+        double nd_rez = (pasirinkimas == 'm') ? mediana(A.paz) : vidurkis(A.paz);
+        double galutinis = 0.4 * nd_rez + 0.6 * A.egz;
+        file << setw(15) << galutinis << endl;
+    }
+
+    cout << "Rezultatai irasyti i faila 'rezultatai.txt'" << endl;
+}
