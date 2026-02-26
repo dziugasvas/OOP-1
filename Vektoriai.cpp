@@ -173,7 +173,7 @@ int main() {
             auto pradzia = std::chrono::high_resolution_clock::now();
             nuskaitymas(grupe, failas);
             auto laikas = std::chrono::duration<double>(std::chrono::high_resolution_clock::now() - pradzia).count();
-            
+
             cout << "Nuskaitymo laikas: " << std::fixed << std::setprecision(3) << laikas << " s" << endl;
             
             break;
@@ -353,10 +353,14 @@ void nuskaitymas(vector<Studentas>& grupe, string failas) {
 
     grupe.clear();
 
-    string eilute;
-    getline(input, eilute);
+    stringstream buffer;
+    buffer << input.rdbuf();
+    input.close();
 
-    while (getline(input,eilute)) {
+    string eilute;
+    getline(buffer, eilute);
+
+    while (getline(buffer,eilute)) {
         if (eilute.empty()) {
             continue;
         }
