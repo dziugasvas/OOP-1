@@ -356,16 +356,28 @@ void nuskaitymas(vector<Studentas>& grupe, string failas) {
     getline(input, eilute);
 
     while (getline(input,eilute)) {
+        if (eilute.empty()) {
+            continue;
+        }
+
         stringstream ss(eilute);
         Studentas s;
 
         ss >> s.vardas >> s.pavarde;
+
+        if (s.vardas.empty() || s.pavarde.empty()) {
+            continue;
+        }
 
         vector <int> paz;
         int x;
 
         while (ss >> x) {
             paz.push_back(x);
+        }
+
+        if (paz.empty()) {
+            continue;
         }
 
         s.egz = paz.back();
@@ -419,6 +431,13 @@ void rusiavimas(vector <Studentas>& grupe, char budas) {
         cout << "3 - Galutinis (vidurkis arba mediana)" << endl;
         cin >> kriterijus;
 
+        if (cin.fail()) {
+            cin.clear();
+            cin.ignore(10000, '\n');
+            cout << "Klaida: iveskite skaiciu 1-3" << endl;
+            continue;
+        }
+        
         if (kriterijus == 1 || kriterijus == 2 || kriterijus == 3) {
             break;
         }
