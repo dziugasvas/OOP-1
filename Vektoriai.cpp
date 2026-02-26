@@ -169,7 +169,13 @@ int main() {
             string failas;
             cout << "Iveskite failo pavadinima: ";
             cin >> failas;
+
+            auto pradzia = std::chrono::high_resolution_clock::now();
             nuskaitymas(grupe, failas);
+            auto laikas = std::chrono::duration<double>(std::chrono::high_resolution_clock::now() - pradzia).count();
+            
+            cout << "Nuskaitymo laikas: " << std::fixed << std::setprecision(3) << laikas << " s" << endl;
+            
             break;
             }
 
@@ -198,16 +204,11 @@ int main() {
                     cin >> kur;
                 }
 
-            auto pradzia = std::chrono::high_resolution_clock::now();
-
                 if (kur == 'f') {
                     spausdinimas (grupe, budas);
                 } else {
                     outputas (grupe, budas);
                 }
-
-                auto laikas = std::chrono::duration<double>(std::chrono::high_resolution_clock::now() - pradzia).count();
-                cout << "Generavimo laikas: " << std::fixed << std::setprecision(3) << laikas << " s" << endl;
 
                 veikia = false;
                 break;
