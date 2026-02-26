@@ -22,6 +22,7 @@ using std::ifstream;
 using std::ofstream;
 using std::getline;
 using std::stringstream;
+using std::sort;
 
 const vector<string> vardai = {"Dovydas", "Matas", "Simonas", "Rokas", "Kajus", "Dziugas", "Virgilijus", "Vitalijus", "Alan", "Aleksas", "Jonas", "Domantas", "Arvydas", "Mantyvdas", "Gvidas"};
 const vector<string> pavardes = {"Kazlauskas", "Buzelis", "Sabonis", "Tubelis", "Gudelis", "Macijauskas", "Alekna", "Vanagas", "Butkevicius", "Ulanovas", "Sirvydis", "Jasikevicius", "Jakucionis", "Kleiza", "Jonauskas"};
@@ -39,6 +40,7 @@ double mediana(const vector<int>& paz);
 double vidurkis(const vector<int>& paz);
 void nuskaitymas(vector<Studentas>& grupe, string failas);
 void spausdinimas(const vector<Studentas>& grupe, char pasirinkimas);
+void rusiavimas(vector <Studentas>& grupe, char budas);
 
 int main() {
     vector <Studentas> grupe;
@@ -182,6 +184,8 @@ int main() {
                     cout << "Neteisinga ivestis. Iveskite 'v' arba 'm': ";
                     cin >> budas;
                 }
+
+                rusiavimas(grupe, budas);
 
                 char kur;
                 cout << "Ar norite faila isvesti i terminala (t) ar i faila (f): ";
@@ -399,4 +403,49 @@ void spausdinimas(const vector <Studentas>& grupe, char pasirinkimas) {
     }
 
     cout << "Rezultatai irasyti i faila 'rezultatai.txt'" << endl;
+}
+
+void rusiavimas(vector <Studentas>& grupe, char budas) {
+    int kriterijus;
+    while (true) {
+        cout << "Pasirinkite kriteriju pagal kuri norite rusiuoti:" << endl;
+        cout << "1 - Vardas" << endl;
+        cout << "2 - Pavarde" << endl;
+        cout << "3 - Galutinis (vidurkis arba mediana)" << endl;
+        cin >> kriterijus;
+
+        if (kriterijus == 1 || kriterijus == 2 || kriterijus == 3) {
+            break;
+        }
+        cout << "Neteisinga ivestis. Bandykite dar karta!" << endl;
+    }
+
+    switch (kriterijus) {
+        case 1:
+        sort(grupe.begin(), grupe.end(), [](const Studentas& A, const Studentas& B) {
+            return A.vardas < B.vardas;
+        });
+        break;
+
+        case 2:
+        sort (grupe.begin(), grupe.end(), [](const Studentas& A, const Studentas& B) {
+            return A.pavarde < B.pavarde;
+        });
+        break;
+
+        case 3:
+        if (budas == 'v') {
+            sort(grupe.begin(), grupe.end(), [](const Studentas& A, const Studentas& B) {
+                double galutinisA = 0.4 * vidurkis(A.paz) + 0.6 * A.egz;
+                double galutinisB = 0.4 * vidurkis(B.paz) + 0.6 * B.egz;
+                return galutinisA > galutinisB;
+            });
+        } else {
+            sort(grupe.begin(), grupe.end(), [](const Studentas& A, const Studentas& B) {
+                double galutinisA = 0.4 * mediana(A.paz) + 0.6 * A.egz;
+                double galutinisB = 0.4 * mediana(B.paz) + 0.6 * B.egz;
+                return galutinisA > galutinisB;
+            });
+        }
+    }
 }
