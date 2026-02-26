@@ -353,14 +353,10 @@ void nuskaitymas(vector<Studentas>& grupe, string failas) {
 
     grupe.clear();
 
-    stringstream buffer;
-    buffer << input.rdbuf();
-    input.close();
-
     string eilute;
-    getline(buffer, eilute);
+    getline(input, eilute);
 
-    while (getline(buffer,eilute)) {
+    while (getline(input,eilute)) {
         if (eilute.empty()) {
             continue;
         }
