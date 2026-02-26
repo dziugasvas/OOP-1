@@ -8,7 +8,7 @@
 #include <cctype>
 #include <fstream>
 #include <sstream>
-
+#include <chrono>
 
 using std::string;
 using std::cin;
@@ -198,11 +198,16 @@ int main() {
                     cin >> kur;
                 }
 
+            auto pradzia = std::chrono::high_resolution_clock::now();
+
                 if (kur == 'f') {
                     spausdinimas (grupe, budas);
                 } else {
                     outputas (grupe, budas);
                 }
+
+                auto laikas = std::chrono::duration<double>(std::chrono::high_resolution_clock::now() - pradzia).count();
+                cout << "Generavimo laikas: " << std::fixed << std::setprecision(3) << laikas << " s" << endl;
 
                 veikia = false;
                 break;
