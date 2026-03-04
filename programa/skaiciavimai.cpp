@@ -1,5 +1,8 @@
 #include "skaiciavimai.h"
+#include "Studentas.h"
 #include <algorithm>
+#include <iostream>
+#include <vector>
 
 using std::vector;
 using std::sort;
