@@ -142,10 +142,10 @@ int main() {
                 cin >> failas;
 
                 try {
-                auto pradzia = std::chrono::high_resolution_clock::now();
-                nuskaitymas(grupe, failas);
-                auto laikas = std::chrono::duration<double>(std::chrono::high_resolution_clock::now() - pradzia).count();
-                cout << "Nuskaitymo laikas: " << std::fixed << std::setprecision(3) << laikas << " s" << endl;
+                    auto pradzia = std::chrono::high_resolution_clock::now();
+                    nuskaitymas(grupe, failas);
+                    auto laikas = std::chrono::duration<double>(std::chrono::high_resolution_clock::now() - pradzia).count();
+                    cout << "Nuskaitymo laikas: " << std::fixed << std::setprecision(3) << laikas << " s" << endl;
                 } catch (std::exception& e) {
                     cout << "Klaida: " << e.what() << endl;
                 }
