@@ -3,6 +3,7 @@
 #include <iostream>
 #include <iomanip>
 #include <fstream>
+#include <stdexcept>
 
 using std::vector;
 using std::string;
@@ -37,8 +38,12 @@ void outputas(const vector<Studentas>& grupe, char pasirinkimas) {
 void spausdinimas(const vector<Studentas>& grupe, char pasirinkimas) {
     ofstream file("rezultatai.txt");
 
-    if (!file.is_open()) {
-        cout << "Nepavyko sukurti failo!" << endl;
+    try {
+        if (!file.is_open()) {
+        throw std::runtime_error("Nepavyko sukurti failo");
+    }
+    } catch (std::exception& e) {
+        cout << "Klaida: " << e.what() << endl;
         return;
     }
 
