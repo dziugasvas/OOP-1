@@ -2,6 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <stdexcept>
 
 using std::vector;
 using std::string;
@@ -83,8 +84,12 @@ void inputas(vector<Studentas>& grupe) {
 void nuskaitymas(vector<Studentas>& grupe, string failas) {
     ifstream input(failas);
 
-    if (!input.is_open()) {
-        cout << "Nepavyko atidaryti failo: " << failas << endl;
+    try {
+        if (!input.is_open()) {
+            throw std::runtime_error("Nepavyko atidaryti failo: " + failas);
+        }
+    } catch (std::exception& e) {
+        cout << "Klaida: " << e.what() << endl;
         return;
     }
 
