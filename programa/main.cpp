@@ -139,13 +139,19 @@ int main() {
             case 4: {
                 string failas;
                 cout << "Iveskite failo pavadinima: ";
+                cout << "Turimi failai: ";
+                system("ls *.txt");
                 cin >> failas;
 
                 try {
                     auto pradzia = std::chrono::high_resolution_clock::now();
                     nuskaitymas(grupe, failas);
-                    auto laikas = std::chrono::duration<double>(std::chrono::high_resolution_clock::now() - pradzia).count();
-                    cout << "Nuskaitymo laikas: " << std::fixed << std::setprecision(3) << laikas << " s" << endl;
+
+                    if(!grupe.empty()) {
+                        auto laikas = std::chrono::duration<double>(std::chrono::high_resolution_clock::now() - pradzia).count();
+
+                        cout << "Nuskaitymo laikas: " << std::fixed << std::setprecision(3) << laikas << " s" << endl;
+                    }
                 } catch (std::exception& e) {
                     cout << "Klaida: " << e.what() << endl;
                 }
