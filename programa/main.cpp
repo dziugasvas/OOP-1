@@ -186,6 +186,12 @@ int main() {
 
                 string failoPavadinimas = "studentai" + std::to_string(kiekStudentu) + ".txt";
                 generuotiFaila(failoPavadinimas, kiekStudentu, ndKiekis);
+                
+                grupe.clear();
+
+                nuskaitymas(grupe, failoPavadinimas);
+
+                cout << "Sugeneruotas ir nuskaitytas failas: " << failoPavadinimas << endl;
 
                 break;
             }
