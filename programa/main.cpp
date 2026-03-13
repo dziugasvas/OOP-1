@@ -197,6 +197,7 @@ int main() {
             }
 
             case 6: {
+
                 char budas;
                 cout << "Kaip skaiciuoti galutini? (v - vidurkis, m - mediana): ";
                 cin >> budas;
@@ -208,36 +209,39 @@ int main() {
                     cin >> budas;
                 }
 
+                if (grupe.empty()) {
+                    cout << "Grupe tuscia. Pirmiausia iveskite arba nuskaitykite studentus." << endl;
+                    break;
+                }
+                 
+                auto start = std::chrono::high_resolution_clock::now();
+
                 rusiavimas(grupe, budas);
 
                 vector<Studentas> vargsiukai;
                 vector<Studentas> kietakai;
 
+                auto split_start = std::chrono::high_resolution_clock::now();
                 padalintiStudentus(grupe, vargsiukai, kietakai, budas);
-
+                auto split_end = std::chrono::high_resolution_clock::now();
+                
+                auto file_start = std::chrono::high_resolution_clock::now();
                 spausdintiIFaila(vargsiukai, "vargsiukai.txt", budas);
                 spausdintiIFaila(kietakai, "kietakai.txt", budas);
+                auto file_end = std::chrono::high_resolution_clock::now();
 
-                char kur;
-                cout << "Ar norite faila isvesti i terminala (t) ar i faila (f): ";
-                cin >> kur;
+                cout << "Vargsiuku: " << vargsiukai.size() << endl;
+                cout << "Kietaku: " << kietakai.size() << endl;
+                cout << "Duomenys issaugoti i failus vargsiukai.txt ir kietakai.txt" << endl;
 
-                while (kur != 't' && kur != 'f') {
-                    cin.clear();
-                    cin.ignore(10000, '\n');
-                    cout << "Neteisinga ivestis. Iveskite 't' arba 'f': ";
-                    cin >> kur;
-                }
+                cout << "Studentu skirstymo laikas: " << std::fixed << std::setprecision(3) << std::chrono::duration<double>(split_end - split_start).count() << " s" << endl;
 
-                try {
-                if (kur == 'f') {
-                    spausdinimas(grupe, budas);
-                } else {
-                    outputas(grupe, budas);
-                }
-                } catch (std::exception& e) {
-                    cout << "Klaida: " << e.what() << endl;
-                }
+                cout << "Isvedimo i failus laikas: " << std::fixed << std::setprecision(3) << std::chrono::duration<double>(file_end - file_start).count() << " s" << endl;
+
+                auto end = std::chrono::high_resolution_clock::now();
+                double visas_laikas = std::chrono::duration<double>(end - start).count();
+
+                cout << "Visos programos veikimo laikas: " << std::fixed << std::setprecision(3) << visas_laikas << " s" << endl;
 
                 veikia = false;
                 break;
