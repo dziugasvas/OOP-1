@@ -8,6 +8,7 @@
 #include "ivestis.h"
 #include "isvestis.h"
 #include "generatorius.h"
+#include "testavimas.h"
 
 using std::vector;
 using std::string;
@@ -31,7 +32,9 @@ int main() {
         cout << "3 - Generuoti studentus (vardas/pavarde/pazymiai)" << endl;
         cout << "4 - Nuskaityti studentus is failo" << endl;
         cout << "5 - Generuoti studentu faila" << endl;
-        cout << "6 - Spausdinti rezultatus ir baigti" << endl;
+        cout << "6 - Tyrimas 1 (failu kurimu greitis)" << endl;
+        cout << "7 - Tyrimas 2 (duomenu apdorojimo greitis)" << endl;
+        cout << "8 - Spausdinti rezultatus ir baigti" << endl;
 
         int p;
         cin >> p;
@@ -39,7 +42,7 @@ int main() {
         if (cin.fail()) {
             cin.clear();
             cin.ignore(10000, '\n');
-            cout << "Klaida: iveskite skaiciu 1-6" << endl;
+            cout << "Klaida: iveskite skaiciu 1-8" << endl;
             continue;
         }
 
@@ -198,6 +201,48 @@ int main() {
 
             case 6: {
 
+                int ndKiekis;
+                cout << "Iveskite ND kieki generuojamuose failuose: ";
+                cin >> ndKiekis;
+
+                while (cin.fail() || ndKiekis <= 0) {
+                    cin.clear();
+                    cin.ignore(10000, '\n');
+                    cout << "Neteisinga ivestis. Iveskite teigiama skaiciu: ";
+                    cin >> ndKiekis;
+                }
+
+                vector<int> dydžiai = {1000, 10000, 100000, 1000000, 10000000};
+                for (int d : dydžiai) {
+                    string fn = "test_" + std::to_string(d) + ".txt";
+                    tyrimas1(fn, d, ndKiekis);
+                }
+                break;
+            }
+
+            case 7: {
+
+                char budas;
+                cout << "Kaip skaiciuoti galutini? (v - vidurkis, m - mediana): ";
+                cin >> budas;
+
+                while (budas != 'v' && budas != 'm') {
+                    cin.clear();
+                    cin.ignore(10000, '\n');
+                    cout << "Neteisinga ivestis. Iveskite 'v' arba 'm': ";
+                    cin >> budas;
+                }
+
+                vector<int> dydžiai = {1000, 10000, 100000, 1000000, 10000000};
+                for (int d : dydžiai) {
+                    string fn = "test_" + std::to_string(d) + ".txt";
+                    tyrimas2(fn, budas);
+                }
+                break;
+            }
+
+            case 8: {
+
                 char budas;
                 cout << "Kaip skaiciuoti galutini? (v - vidurkis, m - mediana): ";
                 cin >> budas;
@@ -210,7 +255,7 @@ int main() {
                 }
 
                 if (grupe.empty()) {
-                    cout << "Grupe tuscia. Pirmiausia iveskite arba nuskaitykite studentus." << endl;
+                    cout << "Nera failu. Pirmiausia iveskite arba nuskaitykite studentus." << endl;
                     break;
                 }
                  
