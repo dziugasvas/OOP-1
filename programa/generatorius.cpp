@@ -24,7 +24,7 @@ void generuotiFaila(const std::string& failoPavadinimas, int studentuKiekis, int
 
     failas << " " << "Egz." << endl;
 
-    for (int i = 0, i < studentuKiekis; i++) {
+    for (int i = 0; i < studentuKiekis; i++) {
         failas << "Vardas" << i + 1<< " " << "Pavarde" << i + 1;
 
         for (int j = 0; j < ndKiekis; j++) {

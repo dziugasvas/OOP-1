@@ -7,6 +7,7 @@
 #include "skaiciavimai.h"
 #include "ivestis.h"
 #include "isvestis.h"
+#include "generatorius.h"
 
 using std::vector;
 using std::string;
@@ -29,7 +30,8 @@ int main() {
         cout << "2 - Generuoti tik pazymius" << endl;
         cout << "3 - Generuoti studentus (vardas/pavarde/pazymiai)" << endl;
         cout << "4 - Nuskaityti studentus is failo" << endl;
-        cout << "5 - Spausdinti rezultatus ir baigti" << endl;
+        cout << "5 - Generuoti studentu faila" << endl;
+        cout << "6 - Spausdinti rezultatus ir baigti" << endl;
 
         int p;
         cin >> p;
@@ -37,7 +39,7 @@ int main() {
         if (cin.fail()) {
             cin.clear();
             cin.ignore(10000, '\n');
-            cout << "Klaida: iveskite skaiciu 1-5" << endl;
+            cout << "Klaida: iveskite skaiciu 1-6" << endl;
             continue;
         }
 
@@ -159,6 +161,36 @@ int main() {
             }
 
             case 5: {
+                int kiekStudentu;
+                int ndKiekis;
+
+                cout << "Iveskite kiek studentu norite sugeneruoti: ";
+                cin >> kiekStudentu;
+
+                while (cin.fail() || kiekStudentu <=0) {
+                    cin.clear();
+                    cin.ignore(10000, '\n');
+                    cout << "Neteisinga ivestis. Iveskite teigiama skaiciu: ";
+                    cin >> kiekStudentu;
+                }
+
+                cout << "Iveskite namu darbu kieki: ";
+                cin >> ndKiekis;
+
+                while (cin.fail() || ndKiekis <=0) {
+                    cin.clear();
+                    cin.ignore(10000, '\n');
+                    cout << "Neteisinga ivestis. Iveskite teigiama skaiciu: ";
+                    cin >> ndKiekis;
+                }
+
+                string failoPavadinimas = "studentai" + std::to_string(kiekStudentu) + ".txt";
+                generuotiFaila(failoPavadinimas, kiekStudentu, ndKiekis);
+
+                break;
+            }
+
+            case 6: {
                 char budas;
                 cout << "Kaip skaiciuoti galutini? (v - vidurkis, m - mediana): ";
                 cin >> budas;
