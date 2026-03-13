@@ -3,12 +3,20 @@
 #include <algorithm>
 #include <iostream>
 #include <vector>
+#include <fstream>
+#include <iomanip>
 
 using std::vector;
 using std::sort;
 using std::cout;
 using std::cin;
 using std::endl;
+using std::string;
+using std::ofstream;
+using std::left;
+using std::setw;
+using std::fixed;
+using std::setprecision;
 
 double mediana(const vector<int>& paz) {
     int n = paz.size();
@@ -87,4 +95,38 @@ void rusiavimas(vector<Studentas>& grupe, char budas) {
             }
             break;
     }
+}
+
+void padalintiStudentus(const vector<Studentas>& grupe, vector<Studentas>& vargsiukai, vector<Studentas>& kietakai, char budas) {
+    vargsiukai.clear();
+    kietakai.clear();
+
+    for (const auto& A : grupe) {
+        double nd_rez = (budas == 'm') ? mediana(A.paz) : vidurkis(A.paz);
+        double galutinis = 0.4 * nd_rez + 0.6 * A.egz;
+
+        if (galutinis < 5.0) {
+            vargsiukai.push_back(A);
+        } else {
+            kietakai.push_back(A);
+        }
+    }
+}
+
+void spausdintiIFaila(const vector<Studentas>& grupe, const string& failoPavadinimas, char budas) {
+    ofstream failas(failoPavadinimas);
+
+    failas << left << setw(15) << "Vardas" << setw(15) << "Pavarde" << setw(20) << "Galutinis" << endl;
+
+    failas << "---------------------------------------------" << endl;
+
+    for (const auto& A : grupe) {
+
+        double nd_rez = (budas == 'm') ? mediana(A.paz) : vidurkis(A.paz);
+        double galutinis = 0.4 * nd_rez + 0.6 * A.egz;
+
+        failas << left << setw(15) << A.vardas << setw(15) << A.pavarde << setw(20) << fixed << setprecision(2) << galutinis << endl;
+    }
+
+    failas.close();
 }

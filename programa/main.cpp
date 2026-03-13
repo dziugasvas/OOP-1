@@ -210,6 +210,14 @@ int main() {
 
                 rusiavimas(grupe, budas);
 
+                vector<Studentas> vargsiukai;
+                vector<Studentas> kietakai;
+
+                padalintiStudentus(grupe, vargsiukai, kietakai, budas);
+
+                spausdintiIFaila(vargsiukai, "vargsiukai.txt", budas);
+                spausdintiIFaila(kietakai, "kietakai.txt", budas);
+
                 char kur;
                 cout << "Ar norite faila isvesti i terminala (t) ar i faila (f): ";
                 cin >> kur;
