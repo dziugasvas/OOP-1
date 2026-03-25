@@ -1,4 +1,5 @@
 #include "funkcijos.h"
+#include "Studentas.h"
 #include <fstream>
 #include <iostream>
 #include <cstdlib>
@@ -181,7 +182,7 @@ void inputas(vector<Studentas>& grupe) {
     }
 }
 
-void nuskaitymas(vector<Studentas>& grupe, string failas) {
+/* void nuskaitymas(vector<Studentas>& grupe, string failas) {
     ifstream input(failas);
 
     try {
@@ -233,6 +234,7 @@ void nuskaitymas(vector<Studentas>& grupe, string failas) {
 
     cout << "Nuskaityta studentu: " << grupe.size() << endl;
 }
+*/
 
 double mediana(const vector<int>& paz) {
     int n = paz.size();
