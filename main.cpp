@@ -4,11 +4,7 @@
 #include <ctime>
 #include <chrono>
 #include "Studentas.h"
-#include "skaiciavimai.h"
-#include "ivestis.h"
-#include "isvestis.h"
-#include "generatorius.h"
-#include "testavimas.h"
+#include "funkcijos.h"
 
 using std::vector;
 using std::string;
