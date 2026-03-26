@@ -8,6 +8,9 @@
 #include <sstream>
 #include <stdexcept>
 #include <iostream>
+#include <algorithm>
+#include <type_traits>
+#include <list>
 
 void generuotiFaila(const std::string& failoPavadinimas, int kiekStudentu, int ndKiekis);
 void outputas(const std::vector<Studentas>& grupe, char pasirinkimas);
@@ -16,7 +19,7 @@ void inputas(std::vector<Studentas>& grupe);
 // void nuskaitymas(std::vector<Studentas>& grupe, std::string failas);
 double mediana(const std::vector<int>& paz);
 double vidurkis(const std::vector<int>& paz);
-void rusiavimas(std::vector<Studentas>& grupe, char budas);
+// void rusiavimas(std::vector<Studentas>& grupe, char budas);
 // void padalintiStudentus(const std::vector<Studentas>& grupe, std::vector<Studentas>& vargsiukai, std::vector<Studentas>& kietakai, char budas);
 void spausdintiIFaila(const std::vector<Studentas>& grupe, const std::string& failoPavadinimas, char budas);
 void tyrimas1(const std::string& failoPavadinimas, int studentuKiekis, int ndKiekis);
@@ -92,5 +95,88 @@ void padalintiStudentus(const konteineris& grupe, konteineris& vargsiukai, konte
         }
     }
 }
+
+template <typename konteineris>
+void rusiavimas(konteineris& grupe, char budas) {
+    int kriterijus;
+    while (true) {
+        std::cout << "Pasirinkite kriteriju pagal kuri norite rusiuoti:" << std::endl;
+        std::cout << "1 - Vardas" << std::endl;
+        std::cout << "2 - Pavarde" << std::endl;
+        std::cout << "3 - Galutinis (vidurkis arba mediana)" << std::endl;
+        std::cin >> kriterijus;
+
+        if (std::cin.fail()) {
+            std::cin.clear();
+            std::cin.ignore(10000, '\n');
+            std::cout << "Klaida: iveskite skaiciu 1-3" << std::endl;
+            continue;
+        }
+
+        if (kriterijus == 1 || kriterijus == 2 || kriterijus == 3) {
+            break;
+        }
+        std::cout << "Neteisinga ivestis. Bandykite dar karta!" << std::endl;
+    }
+
+    if constexpr (std::is_same_v<konteineris, std::list<Studentas>>) {
+        switch (kriterijus) {
+            case 1:
+                grupe.sort([](const Studentas& A, const Studentas& B) {
+                    return A.vardas < B.vardas;
+                });
+                break;
+            case 2:
+                grupe.sort([](const Studentas& A, const Studentas& B) {
+                    return A.pavarde < B.pavarde;
+                });
+                break;
+            case 3:
+                if (budas == 'v') {
+                    grupe.sort([](const Studentas& A, const Studentas& B) {
+                        double galutinisA = 0.4 * vidurkis(A.paz) + 0.6 * A.egz;
+                        double galutinisB = 0.4 * vidurkis(B.paz) + 0.6 * B.egz;
+                        return galutinisA > galutinisB;
+                    });
+                } else {
+                    grupe.sort([](const Studentas& A, const Studentas& B) {
+                        double galutinisA = 0.4 * mediana(A.paz) + 0.6 * A.egz;
+                        double galutinisB = 0.4 * mediana(B.paz) + 0.6 * B.egz;
+                        return galutinisA > galutinisB;
+                    });
+                }
+            break;
+    }
+} else {
+    switch (kriterijus) {
+        case 1:
+        std::sort(grupe.begin(), grupe.end(), [](const Studentas& A, const Studentas& B) {
+            return A.vardas < B.vardas;
+        });
+           break;
+        case 2:
+        std::sort(grupe.begin(), grupe.end(), [](const Studentas& A, const Studentas& B) {
+            return A.pavarde < B.pavarde;
+        });
+           break;
+        case 3:
+        if (budas == 'v') {
+            std::sort(grupe.begin(), grupe.end(), [](const Studentas& A, const Studentas& B) {
+                double galutinisA = 0.4 * vidurkis(A.paz) + 0.6 * A.egz;
+                double galutinisB = 0.4 * vidurkis(B.paz) + 0.6 * B.egz;
+                return galutinisA > galutinisB;
+            });
+        } else {
+            std::sort(grupe.begin(), grupe.end(), [](const Studentas& A, const Studentas& B) {
+                double galutinisA = 0.4 * mediana(A.paz) + 0.6 * A.egz;
+                double galutinisB = 0.4 * mediana(B.paz) + 0.6 * B.egz;
+                return galutinisA > galutinisB;
+            });
+        }
+         break;
+        }
+    }
+}
+
 
 #endif
