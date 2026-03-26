@@ -11,6 +11,7 @@
 #include <algorithm>
 #include <type_traits>
 #include <list>
+#include <iomanip>
 
 void generuotiFaila(const std::string& failoPavadinimas, int kiekStudentu, int ndKiekis);
 void outputas(const std::vector<Studentas>& grupe, char pasirinkimas);
@@ -21,7 +22,7 @@ double mediana(const std::vector<int>& paz);
 double vidurkis(const std::vector<int>& paz);
 // void rusiavimas(std::vector<Studentas>& grupe, char budas);
 // void padalintiStudentus(const std::vector<Studentas>& grupe, std::vector<Studentas>& vargsiukai, std::vector<Studentas>& kietakai, char budas);
-void spausdintiIFaila(const std::vector<Studentas>& grupe, const std::string& failoPavadinimas, char budas);
+// void spausdintiIFaila(const std::vector<Studentas>& grupe, const std::string& failoPavadinimas, char budas);
 void tyrimas1(const std::string& failoPavadinimas, int studentuKiekis, int ndKiekis);
 void tyrimas2(const std::string& failoPavadinimas, char budas);
 
@@ -176,6 +177,25 @@ void rusiavimas(konteineris& grupe, char budas) {
          break;
         }
     }
+}
+
+template <typename konteineris>
+void spausdintiIFaila(const konteineris& grupe, const std::string& failoPavadinimas, char budas) {
+    std::ofstream failas(failoPavadinimas);
+
+    failas << std::left << std::setw(15) << "Vardas" << std::setw(15) << "Pavarde" << std::setw(20) << "Galutinis" << std::endl;
+
+    failas << "---------------------------------------------" << std::endl;
+
+    for (const auto& A : grupe) {
+
+        double nd_rez = (budas == 'm') ? mediana(A.paz) : vidurkis(A.paz);
+        double galutinis = 0.4 * nd_rez + 0.6 * A.egz;
+
+        failas << std::left << std::setw(15) << A.vardas << std::setw(15) << A.pavarde << std::setw(20) << std::fixed << std::setprecision(2) << galutinis << std::endl;
+    }
+
+    failas.close();
 }
 
 

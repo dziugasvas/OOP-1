@@ -264,7 +264,7 @@ double vidurkis(const vector<int>& paz) {
     return sum * 1.0 / paz.size();
 }
 
-void rusiavimas(vector<Studentas>& grupe, char budas) {
+/* void rusiavimas(vector<Studentas>& grupe, char budas) {
     int kriterijus;
     while (true) {
         cout << "Pasirinkite kriteriju pagal kuri norite rusiuoti:" << endl;
@@ -314,8 +314,9 @@ void rusiavimas(vector<Studentas>& grupe, char budas) {
             break;
     }
 }
+    */
 
-void padalintiStudentus(const vector<Studentas>& grupe, vector<Studentas>& vargsiukai, vector<Studentas>& kietakai, char budas) {
+/* void padalintiStudentus(const vector<Studentas>& grupe, vector<Studentas>& vargsiukai, vector<Studentas>& kietakai, char budas) {
     vargsiukai.clear();
     kietakai.clear();
 
@@ -330,8 +331,9 @@ void padalintiStudentus(const vector<Studentas>& grupe, vector<Studentas>& vargs
         }
     }
 }
+*/
 
-void spausdintiIFaila(const vector<Studentas>& grupe, const string& failoPavadinimas, char budas) {
+/* void spausdintiIFaila(const vector<Studentas>& grupe, const string& failoPavadinimas, char budas) {
     ofstream failas(failoPavadinimas);
 
     failas << left << setw(15) << "Vardas" << setw(15) << "Pavarde" << setw(20) << "Galutinis" << endl;
@@ -348,6 +350,7 @@ void spausdintiIFaila(const vector<Studentas>& grupe, const string& failoPavadin
 
     failas.close();
 }
+    */
 
 void tyrimas1(const string& failoPavadinimas, int studentuKiekis, int ndKiekis) {
     cout << "Pirmo tyrimo failo kurimas: " << failoPavadinimas << endl;
