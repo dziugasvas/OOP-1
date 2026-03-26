@@ -17,35 +17,35 @@ void inputas(std::vector<Studentas>& grupe);
 double mediana(const std::vector<int>& paz);
 double vidurkis(const std::vector<int>& paz);
 void rusiavimas(std::vector<Studentas>& grupe, char budas);
-void padalintiStudentus(const std::vector<Studentas>& grupe, std::vector<Studentas>& vargsiukai, std::vector<Studentas>& kietakai, char budas);
+// void padalintiStudentus(const std::vector<Studentas>& grupe, std::vector<Studentas>& vargsiukai, std::vector<Studentas>& kietakai, char budas);
 void spausdintiIFaila(const std::vector<Studentas>& grupe, const std::string& failoPavadinimas, char budas);
 void tyrimas1(const std::string& failoPavadinimas, int studentuKiekis, int ndKiekis);
 void tyrimas2(const std::string& failoPavadinimas, char budas);
 
 template <typename konteineris>
-void nuskaitymas(konteineris& grupe, string failas) {
-    ifstream input(failas);
+void nuskaitymas(konteineris& grupe, std::string failas) {
+    std::ifstream input(failas);
 
     try {
         if (!input.is_open()) {
             throw std::runtime_error("Nepavyko atidaryti failo: " + failas);
         }
     } catch (std::exception& e) {
-        cout << "Klaida: " << e.what() << endl;
+        std::cout << "Klaida: " << e.what() << std::endl;
         return;
     }
 
     grupe.clear();
 
-    string eilute;
-    getline(input, eilute);
+    std::string eilute;
+    std::getline(input, eilute);
 
-    while (getline(input, eilute)) {
+    while (std::getline(input, eilute)) {
         if (eilute.empty()) {
             continue;
         }
 
-        stringstream ss(eilute);
+        std::stringstream ss(eilute);
         Studentas s;
 
         ss >> s.vardas >> s.pavarde;
@@ -54,7 +54,7 @@ void nuskaitymas(konteineris& grupe, string failas) {
             continue;
         }
 
-        vector<int> paz;
+        std::vector<int> paz;
         int x;
 
         while (ss >> x) {
@@ -73,8 +73,24 @@ void nuskaitymas(konteineris& grupe, string failas) {
         grupe.push_back(s);
     }
 
-    cout << "Nuskaityta studentu: " << grupe.size() << endl;
+    std::cout << "Nuskaityta studentu: " << grupe.size() << std::endl;
 }
 
+template <typename konteineris>
+void padalintiStudentus(const konteineris& grupe, konteineris& vargsiukai, konteineris& kietakai, char budas) {
+    vargsiukai.clear();
+    kietakai.clear();
+
+    for (const auto& A : grupe) {
+        double nd_rez = (budas == 'm') ? mediana(A.paz) : vidurkis(A.paz);
+        double galutinis = 0.4 * nd_rez + 0.6 * A.egz;
+
+        if (galutinis < 5.0) {
+            vargsiukai.push_back(A);
+        } else {
+            kietakai.push_back(A);
+        }
+    }
+}
 
 #endif
