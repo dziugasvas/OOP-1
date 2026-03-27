@@ -81,7 +81,7 @@ void nuskaitymas(konteineris& grupe, std::string failas) {
 }
 
 template <typename konteineris>
-void padalintiStudentus(const konteineris& grupe, konteineris& vargsiukai, konteineris& kietakai, char budas) {
+void padalintiStudentus1(const konteineris& grupe, konteineris& vargsiukai, konteineris& kietakai, char budas) {
     vargsiukai.clear();
     kietakai.clear();
 
