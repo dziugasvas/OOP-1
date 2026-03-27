@@ -5,6 +5,7 @@
 #include <chrono>
 #include <list>
 #include <deque>
+#include <cctype>
 #include "Studentas.h"
 #include "funkcijos.h"
 
@@ -13,6 +14,8 @@ using std::string;
 using std::cout;
 using std::cin;
 using std::endl;
+using std::list;
+using std::deque;
 
 const vector<string> vardai = {"Dovydas", "Matas", "Simonas", "Rokas", "Kajus", "Dziugas", "Virgilijus", "Vitalijus", "Alan", "Aleksas", "Jonas", "Domantas", "Arvydas", "Mantyvdas", "Gvidas"};
 const vector<string> pavardes = {"Kazlauskas", "Buzelis", "Sabonis", "Tubelis", "Gudelis", "Macijauskas", "Alekna", "Vanagas", "Butkevicius", "Ulanovas", "Sirvydis", "Jasikevicius", "Jakucionis", "Kleiza", "Jonauskas"};
@@ -258,9 +261,86 @@ int main() {
                 }
 
                 cout << "Pasirinkta strategija: " << strategija << endl;
+                
+                char kont;
 
-                cout << "Logika veliau." << endl;
+                cout << "Pasirinkite konteinerio tipa (v - vector, l - list, d - deque): ";
+                cin >> kont;
+                kont = tolower(kont);
 
+                while (cin.fail() || (kont != 'v' && kont != 'l' && kont != 'd')) {
+                    cin.clear();
+                    cin.ignore(10000, '\n');
+                    cout << "Neteisinga ivestis. Pasirinkite 'v', 'l' arba 'd': ";
+                    cin >> kont;
+                    kont = tolower(kont);
+                }
+
+                string failas;
+                cout << "Iveskite failo pavadinima: ";
+                cin >> failas;
+
+                char budas;
+                cout << "Kaip skaiciuoti galutini rezultata? (v - vidurkis, m - mediana): ";
+                cin >> budas;
+
+                while (cin.fail() || (budas != 'v' && budas != 'm')) {
+                    cin.clear();
+                    cin.ignore(10000, '\n');
+                    cout << "Neteisinga ivestis. Iveskite 'v' arba 'm': ";
+                    cin >> budas;
+                }
+
+                if (kont == 'v') {
+                    vector<Studentas> grupe;
+                    nuskaitymas(grupe, failas);
+                    rusiavimas(grupe, budas);
+
+                    if (strategija == 1) {
+                        vector<Studentas> vargsiukai, kietakai;
+                        padalintiStudentus1(grupe, vargsiukai, kietakai, budas);
+                    } else if (strategija == 2) {
+                        vector<Studentas> vargsiukai;
+                        padalintiStudentus2(grupe, vargsiukai, budas);
+                    } else {
+                        vector<Studentas> vargsiukai;
+                        padalintiStudentus3(grupe, vargsiukai, budas);
+                    }
+                }
+                else if (kont == 'l') {
+                    list<Studentas> grupe;
+                    nuskaitymas(grupe, failas);
+                    rusiavimas(grupe, budas);
+
+                    if (strategija == 1) {
+                        list<Studentas> vargsiukai, kietakai;
+                        padalintiStudentus1(grupe, vargsiukai, kietakai, budas);
+                    } else if (strategija == 2) {
+                        list<Studentas> vargsiukai;
+                        padalintiStudentus2(grupe, vargsiukai, budas);
+                    } else {
+                        list<Studentas> vargsiukai;
+                        padalintiStudentus3(grupe, vargsiukai, budas);
+                    }
+                }
+                else {
+                    deque<Studentas> grupe;
+                    nuskaitymas(grupe, failas);
+                    rusiavimas(grupe, budas);
+
+                    if (strategija == 1) {
+                        deque<Studentas> vargsiukai, kietakai;
+                        padalintiStudentus1(grupe, vargsiukai, kietakai, budas);
+                    } else if (strategija == 2) {
+                        deque<Studentas> vargsiukai;
+                        padalintiStudentus2(grupe, vargsiukai, budas);
+                    } else {
+                        deque<Studentas> vargsiukai;
+                        padalintiStudentus3(grupe, vargsiukai, budas);
+                    }
+                }
+                
+                cout << "Strategijos tyrimas baigtas." << endl;
                 break;
             }
 
