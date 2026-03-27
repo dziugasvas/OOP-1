@@ -3,6 +3,8 @@
 #include <cstdlib>
 #include <ctime>
 #include <chrono>
+#include <list>
+#include <deque>
 #include "Studentas.h"
 #include "funkcijos.h"
 
@@ -30,7 +32,7 @@ int main() {
         cout << "5 - Generuoti studentu faila" << endl;
         cout << "6 - Tyrimas 1 (failu kurimu greitis)" << endl;
         cout << "7 - Tyrimas 2 (duomenu apdorojimo greitis)" << endl;
-        cout << "8 - Konteineriu tyrimai (vector/list/deque)" << endl;
+        cout << "8 - Atlikti strategiju tyrimus" << endl;
         cout << "9 - Spausdinti rezultatus" << endl;
         cout << "10 - Baigti darba" << endl;
 
@@ -240,7 +242,25 @@ int main() {
             }
 
             case 8: {
-                cout << "Konteineriu tyrimai (bus dar prideta)" << endl;
+                int strategija;
+
+                cout << "Pasirinkite skirstymo strategija:" << endl;
+                cout << "1 - 1 strategija" << endl;
+                cout << "2 - 2 strategija" << endl;
+                cout << "3 - 3 strategija" << endl;
+                cin >> strategija;
+
+                while (cin.fail() || strategija < 1 || strategija > 3) {
+                    cin.clear();
+                    cin.ignore(10000, '\n');
+                    cout << "Neteisinga ivestis. Pasirinkite 1, 2 arba 3: ";
+                    cin >> strategija;
+                }
+
+                cout << "Pasirinkta strategija: " << strategija << endl;
+
+                cout << "Logika veliau." << endl;
+
                 break;
             }
 
