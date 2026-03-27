@@ -117,6 +117,20 @@ void padalintiStudentus2(konteineris& grupe, konteineris& vargsiukai, char budas
 }
 
 template <typename konteineris>
+void padalintiStudentus3(konteineris& grupe, konteineris& vargsiukai, char budas) {
+    vargsiukai.clear();
+
+    auto riba = std::partition(grupe.begin(), grupe.end(), [budas](const Studentas& A) {
+        double nd_rez = (budas == 'm') ? mediana(A.paz) : vidurkis(A.paz);
+        double galutinis = 0.4 * nd_rez + 0.6 * A.egz;
+        return galutinis >= 5.0;
+    });
+
+    vargsiukai.insert(vargsiukai.end(), riba, grupe.end());
+    grupe.erase(riba, grupe.end());
+}
+
+template <typename konteineris>
 void rusiavimas(konteineris& grupe, char budas) {
     int kriterijus;
     while (true) {
