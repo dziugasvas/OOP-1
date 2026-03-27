@@ -30,7 +30,9 @@ int main() {
         cout << "5 - Generuoti studentu faila" << endl;
         cout << "6 - Tyrimas 1 (failu kurimu greitis)" << endl;
         cout << "7 - Tyrimas 2 (duomenu apdorojimo greitis)" << endl;
-        cout << "8 - Spausdinti rezultatus ir baigti" << endl;
+        cout << "8 - Konteineriu tyrimai (vector/list/deque)" << endl;
+        cout << "9 - Spausdinti rezultatus" << endl;
+        cout << "10 - Baigti darba" << endl;
 
         int p;
         cin >> p;
@@ -38,7 +40,7 @@ int main() {
         if (cin.fail()) {
             cin.clear();
             cin.ignore(10000, '\n');
-            cout << "Klaida: iveskite skaiciu 1-8" << endl;
+            cout << "Klaida: iveskite skaiciu 1-10" << endl;
             continue;
         }
 
@@ -238,6 +240,11 @@ int main() {
             }
 
             case 8: {
+                cout << "Konteineriu tyrimai (bus dar prideta)" << endl;
+                break;
+            }
+
+            case 9: {
 
                 char budas;
                 cout << "Kaip skaiciuoti galutini? (v - vidurkis, m - mediana): ";
@@ -284,6 +291,10 @@ int main() {
 
                 cout << "Visos programos veikimo laikas: " << std::fixed << std::setprecision(3) << visas_laikas << " s" << endl;
 
+            }
+
+            case 10: {
+                cout << "Programa baigiama." << endl;
                 veikia = false;
                 break;
             }
