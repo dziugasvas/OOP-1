@@ -259,11 +259,8 @@ int main() {
                     cout << "Neteisinga ivestis. Pasirinkite 1, 2 arba 3: ";
                     cin >> strategija;
                 }
-
-                cout << "Pasirinkta strategija: " << strategija << endl;
                 
                 char kont;
-
                 cout << "Pasirinkite konteinerio tipa (v - vector, l - list, d - deque): ";
                 cin >> kont;
                 kont = tolower(kont);
@@ -276,70 +273,41 @@ int main() {
                     kont = tolower(kont);
                 }
 
-                string failas;
-                cout << "Iveskite failo pavadinima: ";
-                cin >> failas;
+                int kriterijus;
+                cout << "Pasirinkite rikiavimo kriteriju:" << endl;
+                cout << "1 - Vardas" << endl;
+                cout << "2 - Pavarde" << endl;
+                cout << "3 - Galutinis (vidurkis arba mediana)" << endl;
+                cin >> kriterijus;
 
-                char budas;
+                while (cin.fail() || kriterijus < 1 || kriterijus > 3) {
+                    cin.clear();
+                    cin.ignore(10000, '\n');
+                    cout << "Neteisinga ivestis. Pasirinkite 1, 2 arba 3: ";
+                    cin >> kriterijus;
+                }
+
                 cout << "Kaip skaiciuoti galutini rezultata? (v - vidurkis, m - mediana): ";
-                cin >> budas;
+                cin >> kriterijus;
 
-                while (cin.fail() || (budas != 'v' && budas != 'm')) {
+                while (cin.fail() || (kriterijus != 'v' && kriterijus != 'm')) {
                     cin.clear();
                     cin.ignore(10000, '\n');
                     cout << "Neteisinga ivestis. Iveskite 'v' arba 'm': ";
-                    cin >> budas;
+                    cin >> kriterijus;
                 }
 
                 if (kont == 'v') {
-                    vector<Studentas> grupe;
-                    nuskaitymas(grupe, failas);
-                    rusiavimas(grupe, budas);
-
-                    if (strategija == 1) {
-                        vector<Studentas> vargsiukai, kietakai;
-                        padalintiStudentus1(grupe, vargsiukai, kietakai, budas);
-                    } else if (strategija == 2) {
-                        vector<Studentas> vargsiukai;
-                        padalintiStudentus2(grupe, vargsiukai, budas);
-                    } else {
-                        vector<Studentas> vargsiukai;
-                        padalintiStudentus3(grupe, vargsiukai, budas);
-                    }
+                    laikoSkaiciavimas<std::vector<Studentas>>(strategija, kriterijus, budas, "Vector");
                 }
                 else if (kont == 'l') {
-                    list<Studentas> grupe;
-                    nuskaitymas(grupe, failas);
-                    rusiavimas(grupe, budas);
-
-                    if (strategija == 1) {
-                        list<Studentas> vargsiukai, kietakai;
-                        padalintiStudentus1(grupe, vargsiukai, kietakai, budas);
-                    } else if (strategija == 2) {
-                        list<Studentas> vargsiukai;
-                        padalintiStudentus2(grupe, vargsiukai, budas);
-                    } else {
-                        list<Studentas> vargsiukai;
-                        padalintiStudentus3(grupe, vargsiukai, budas);
-                    }
+                    laikoSkaiciavimas<std::list<Studentas>>(strategija, kriterijus, budas, "List");
                 }
                 else {
-                    deque<Studentas> grupe;
-                    nuskaitymas(grupe, failas);
-                    rusiavimas(grupe, budas);
-
-                    if (strategija == 1) {
-                        deque<Studentas> vargsiukai, kietakai;
-                        padalintiStudentus1(grupe, vargsiukai, kietakai, budas);
-                    } else if (strategija == 2) {
-                        deque<Studentas> vargsiukai;
-                        padalintiStudentus2(grupe, vargsiukai, budas);
-                    } else {
-                        deque<Studentas> vargsiukai;
-                        padalintiStudentus3(grupe, vargsiukai, budas);
-                    }
+                    laikoSkaiciavimas<std::deque<Studentas>>(strategija, kriterijus, budas, "Deque");
                 }
-                
+
+
                 cout << "Strategijos tyrimas baigtas." << endl;
                 break;
             }

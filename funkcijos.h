@@ -12,6 +12,8 @@
 #include <type_traits>
 #include <list>
 #include <iomanip>
+#include <deque>
+#include <chrono>
 
 void generuotiFaila(const std::string& failoPavadinimas, int kiekStudentu, int ndKiekis);
 void outputas(const std::vector<Studentas>& grupe, char pasirinkimas);
@@ -231,5 +233,97 @@ void spausdintiIFaila(const konteineris& grupe, const std::string& failoPavadini
     failas.close();
 }
 
+template <typename konteineris>
+void laikoSkaiciavimas(int strategija, int kriterijus, char budas, const std::string& konteinerioPavadinimas) {
+    std::vector<int> dydziai = {1000, 10000, 100000, 1000000, 10000000};
+
+    std::cout << "\n" << konteinerioPavadinimas << " konteineris:" << std::endl;
+    std::cout << std::left << std::setw(12) << "Studentai" << std::setw(22) << "Nuskaitymo laikas" << std::setw(22) << "Rikiavimo laikas" << std::setw(22) << "Skirstymo laikas" << std::setw(22) << "Bendras laikas" << std::endl;
+
+    for (int x : dydziai) {
+        konteineris grupe;
+        konteineris vargsiukai;
+        konteineris kietakai;
+
+        auto start1 = std::chrono::high_resolution_clock::now();
+        nuskaitymas(grupe, "studentai" + std::to_string(x) + ".txt");
+        auto end1 = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double> diff1 = end1 - start1;
+
+        auto start2 = std::chrono::high_resolution_clock::now();
+
+        if constexpr (std::is_same_v<konteineris, std::list<Studentas>>) {
+            switch (kriterijus) {
+                case 1:
+                    grupe.sort([](const Studentas& A, const Studentas& B) {
+                        return A.vardas < B.vardas;
+                    });
+                    break;
+                case 2:
+                    grupe.sort([](const Studentas& A, const Studentas& B) {
+                        return A.pavarde < B.pavarde;
+                    });
+                    break;
+                case 3:
+                if (budas == 'v') {
+                    grupe.sort([](const Studentas& A, const Studentas& B) {
+                        double galutinisA = 0.4 * vidurkis(A.paz) + 0.6 * A.egz;
+                        double galutinisB = 0.4 * vidurkis(B.paz) + 0.6 * B.egz;
+                        return galutinisA > galutinisB;
+                    });
+                } else {
+                    grupe.sort([](const Studentas& A, const Studentas& B) {
+                        double galutinisA = 0.4 * mediana(A.paz) + 0.6 * A.egz;
+                        double galutinisB = 0.4 * mediana(B.paz) + 0.6 * B.egz;
+                        return galutinisA > galutinisB;
+                    });
+                }
+                break;
+            }
+        } else {
+            switch(kriterijus) {
+                case 1:
+                std::sort(grupe.begin(), grupe.end(), [](const Studentas& A, const Studentas& B) {
+                    return A.vardas < B.vardas;
+                });
+                break;
+                case 2:
+                std::sort(grupe.begin(), grupe.end(), [](const Studentas& A, const Studentas& B) {
+                    return A.pavarde < B.pavarde;
+                });
+                break;
+                case 3:
+                if (budas == 'v') {
+                    std::sort(grupe.begin(), grupe.end(), [](const Studentas& A, const Studentas& B) {
+                        double galutinisA = 0.4 * vidurkis(A.paz) + 0.6 * A.egz;
+                        double galutinisB = 0.4 * vidurkis(B.paz) + 0.6 * B.egz;
+                        return galutinisA > galutinisB;
+                    });
+                }
+                break;
+            }
+        }
+
+        auto end2 = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double> diff2 = end2 - start2;
+
+        auto start3 = std::chrono::high_resolution_clock::now();
+
+        if (strategija == 1) {
+            padalintiStudentus1(grupe, vargsiukai, kietakai, budas);
+        } else if (strategija == 2) {
+            padalintiStudentus2(grupe, vargsiukai, budas);
+        } else {
+            padalintiStudentus3(grupe, vargsiukai, budas);
+        }
+
+        auto end3 = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double> diff3 = end3 - start3;
+
+        double bendras = diff1.count() + diff2.count() + diff3.count();
+        
+        std::cout << std::left << std::setw(12) << x << std::setw(22) << diff1.count() << std::setw(22) << diff2.count() << std::setw(22) << diff3.count() << std::setw(22) << bendras << std::endl;
+    }
+}
 
 #endif
