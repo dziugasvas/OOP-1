@@ -263,7 +263,7 @@ int main() {
                 vector<Studentas> kietakai;
 
                 auto split_start = std::chrono::high_resolution_clock::now();
-                padalintiStudentus(grupe, vargsiukai, kietakai, budas);
+                padalintiStudentus1(grupe, vargsiukai, kietakai, budas);
                 auto split_end = std::chrono::high_resolution_clock::now();
                 
                 auto file_start = std::chrono::high_resolution_clock::now();

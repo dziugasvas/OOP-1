@@ -98,6 +98,25 @@ void padalintiStudentus1(const konteineris& grupe, konteineris& vargsiukai, kont
 }
 
 template <typename konteineris>
+void padalintiStudentus2(konteineris& grupe, konteineris& vargsiukai, char budas) {
+    vargsiukai.clear();
+
+    auto it = grupe.begin();
+
+    while (it != grupe.end()) {
+        double nd_rez = (budas == 'm') ? mediana(it->paz) : vidurkis(it->paz);
+        double galutinis = 0.4 * nd_rez + 0.6 * it->egz;
+
+        if (galutinis < 5.0) {
+            vargsiukai.push_back(*it);
+            it = grupe.erase(it);
+        } else {
+            ++it;
+        }
+    }
+}
+
+template <typename konteineris>
 void rusiavimas(konteineris& grupe, char budas) {
     int kriterijus;
     while (true) {

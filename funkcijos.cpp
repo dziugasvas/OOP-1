@@ -396,7 +396,7 @@ void tyrimas2(const string& failoPavadinimas, char budas) {
     vector<Studentas> vargsiukai, kietakai;
 
     auto t3 = std::chrono::high_resolution_clock::now();
-    padalintiStudentus(grupe, vargsiukai, kietakai, budas);
+    padalintiStudentus1(grupe, vargsiukai, kietakai, budas);
     auto t4 = std::chrono::high_resolution_clock::now();
     cout << "Rusiavimo laikas: " << std::fixed << std::setprecision(5) << std::chrono::duration<double>(t4 - t3).count() << " s" << endl;
 
