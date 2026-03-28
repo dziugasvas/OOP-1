@@ -287,14 +287,17 @@ int main() {
                     cin >> kriterijus;
                 }
 
-                cout << "Kaip skaiciuoti galutini rezultata? (v - vidurkis, m - mediana): ";
-                cin >> kriterijus;
+                char budas = 'v';
+                if (kriterijus == 3) {
+                    cout << "Kaip skaiciuoti galutini rezultata? (v - vidurkis, m - mediana): ";
+                    cin >> budas;
 
-                while (cin.fail() || (kriterijus != 'v' && kriterijus != 'm')) {
-                    cin.clear();
-                    cin.ignore(10000, '\n');
-                    cout << "Neteisinga ivestis. Iveskite 'v' arba 'm': ";
-                    cin >> kriterijus;
+                    while (cin.fail() || (budas != 'v' && budas != 'm')) {
+                        cin.clear();
+                        cin.ignore(10000, '\n');
+                        cout << "Neteisinga ivestis. Iveskite 'v' arba 'm': ";
+                        cin >> budas;
+                    }
                 }
 
                 if (kont == 'v') {
@@ -358,7 +361,7 @@ int main() {
                 double visas_laikas = std::chrono::duration<double>(end - start).count();
 
                 cout << "Visos programos veikimo laikas: " << std::fixed << std::setprecision(3) << visas_laikas << " s" << endl;
-
+                break;
             }
 
             case 10: {

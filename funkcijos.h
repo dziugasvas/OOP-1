@@ -74,12 +74,11 @@ void nuskaitymas(konteineris& grupe, std::string failas) {
         s.egz = paz.back();
         paz.pop_back();
         s.paz = paz;
-        s.rez = 0;
+        s.galutinisVid = 0.4 * vidurkis(s.paz) + 0.6 * s.egz;
+        s.galutinisMed = 0.4 * mediana(s.paz) + 0.6 * s.egz;
 
         grupe.push_back(s);
     }
-
-    std::cout << "Nuskaityta studentu: " << grupe.size() << std::endl;
 }
 
 template <typename konteineris>
@@ -88,8 +87,7 @@ void padalintiStudentus1(const konteineris& grupe, konteineris& vargsiukai, kont
     kietakai.clear();
 
     for (const auto& A : grupe) {
-        double nd_rez = (budas == 'm') ? mediana(A.paz) : vidurkis(A.paz);
-        double galutinis = 0.4 * nd_rez + 0.6 * A.egz;
+        double galutinis = (budas == 'm') ? A.galutinisMed : A.galutinisVid;
 
         if (galutinis < 5.0) {
             vargsiukai.push_back(A);
@@ -103,17 +101,28 @@ template <typename konteineris>
 void padalintiStudentus2(konteineris& grupe, konteineris& vargsiukai, char budas) {
     vargsiukai.clear();
 
-    auto it = grupe.begin();
+    if constexpr (std::is_same_v<konteineris, std::list<Studentas>>) {
+        grupe.sort([budas](const Studentas& A, const Studentas& B) {
+            return (budas == 'm') ? A.galutinisMed > B.galutinisMed : A.galutinisVid > B.galutinisVid;
+        });
+    } else {
+        std::sort(grupe.begin(), grupe.end(), [budas](const Studentas& A, const Studentas& B) {
+            return (budas == 'm') ? A.galutinisMed > B.galutinisMed : A.galutinisVid > B.galutinisVid;
+        });
+    }
 
-    while (it != grupe.end()) {
-        double nd_rez = (budas == 'm') ? mediana(it->paz) : vidurkis(it->paz);
-        double galutinis = 0.4 * nd_rez + 0.6 * it->egz;
+    auto it = grupe.end();
+
+    while (it != grupe.begin()) {
+        --it;
+
+        double galutinis = (budas == 'm') ? it->galutinisMed : it->galutinisVid;
 
         if (galutinis < 5.0) {
             vargsiukai.push_back(*it);
             it = grupe.erase(it);
         } else {
-            ++it;
+            break;
         }
     }
 }
@@ -123,8 +132,7 @@ void padalintiStudentus3(konteineris& grupe, konteineris& vargsiukai, char budas
     vargsiukai.clear();
 
     auto riba = std::partition(grupe.begin(), grupe.end(), [budas](const Studentas& A) {
-        double nd_rez = (budas == 'm') ? mediana(A.paz) : vidurkis(A.paz);
-        double galutinis = 0.4 * nd_rez + 0.6 * A.egz;
+        double galutinis = (budas == 'm') ? A.galutinisMed : A.galutinisVid;
         return galutinis >= 5.0;
     });
 
@@ -259,23 +267,21 @@ void laikoSkaiciavimas(int strategija, int kriterijus, char budas, const std::st
                         return A.vardas < B.vardas;
                     });
                     break;
+
                 case 2:
                     grupe.sort([](const Studentas& A, const Studentas& B) {
                         return A.pavarde < B.pavarde;
                     });
                     break;
+                    
                 case 3:
                 if (budas == 'v') {
                     grupe.sort([](const Studentas& A, const Studentas& B) {
-                        double galutinisA = 0.4 * vidurkis(A.paz) + 0.6 * A.egz;
-                        double galutinisB = 0.4 * vidurkis(B.paz) + 0.6 * B.egz;
-                        return galutinisA > galutinisB;
+                        return A.galutinisVid > B.galutinisVid;
                     });
                 } else {
                     grupe.sort([](const Studentas& A, const Studentas& B) {
-                        double galutinisA = 0.4 * mediana(A.paz) + 0.6 * A.egz;
-                        double galutinisB = 0.4 * mediana(B.paz) + 0.6 * B.egz;
-                        return galutinisA > galutinisB;
+                        return A.galutinisMed > B.galutinisMed;
                     });
                 }
                 break;
@@ -287,17 +293,21 @@ void laikoSkaiciavimas(int strategija, int kriterijus, char budas, const std::st
                     return A.vardas < B.vardas;
                 });
                 break;
+
                 case 2:
                 std::sort(grupe.begin(), grupe.end(), [](const Studentas& A, const Studentas& B) {
                     return A.pavarde < B.pavarde;
                 });
                 break;
+                
                 case 3:
                 if (budas == 'v') {
                     std::sort(grupe.begin(), grupe.end(), [](const Studentas& A, const Studentas& B) {
-                        double galutinisA = 0.4 * vidurkis(A.paz) + 0.6 * A.egz;
-                        double galutinisB = 0.4 * vidurkis(B.paz) + 0.6 * B.egz;
-                        return galutinisA > galutinisB;
+                        return A.galutinisVid > B.galutinisVid;
+                    });
+                } else {
+                    std::sort(grupe.begin(), grupe.end(), [](const Studentas& A, const Studentas& B) {
+                        return A.galutinisMed > B.galutinisMed;
                     });
                 }
                 break;
