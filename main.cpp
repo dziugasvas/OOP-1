@@ -89,6 +89,10 @@ int main() {
                     A.egz = rand() % 10 + 1;
                     A.rez = 0;
 
+                    A.galutinisVid = 0.4 * vidurkis(A.paz) + 0.6 * A.egz;
+                    A.galutinisMed = 0.4 * mediana(A.paz) + 0.6 * A.egz;
+                    A.rez = A.galutinisVid;
+
                     grupe.push_back(A);
 
                     cout << "Sugeneruota: " << kiek << " ND pazymiai. Egzamino pazymys = " << A.egz << endl;
@@ -135,6 +139,8 @@ int main() {
                     A.egz = rand() % 10 + 1;
 
                     double nd_vid = sum * 1.0 / A.paz.size();
+                    A.galutinisVid = 0.4 * nd_vid + 0.6 * A.egz;
+                    A.galutinisMed = 0.4 * mediana(A.paz) + 0.6 * A.egz;
                     A.rez = 0.4 * nd_vid + 0.6 * A.egz;
 
                     grupe.push_back(A);

@@ -178,63 +178,12 @@ void inputas(vector<Studentas>& grupe) {
         }
 
         A.rez = 0;
+        A.galutinisVid = 0.4 * vidurkis(A.paz) + 0.6 * A.egz;
+        A.galutinisMed = 0.4 * mediana(A.paz) + 0.6 * A.egz;
+        A.rez = A.galutinisVid;
         grupe.push_back(A);
     }
 }
-
-/* void nuskaitymas(vector<Studentas>& grupe, string failas) {
-    ifstream input(failas);
-
-    try {
-        if (!input.is_open()) {
-            throw std::runtime_error("Nepavyko atidaryti failo: " + failas);
-        }
-    } catch (std::exception& e) {
-        cout << "Klaida: " << e.what() << endl;
-        return;
-    }
-
-    grupe.clear();
-
-    string eilute;
-    getline(input, eilute);
-
-    while (getline(input, eilute)) {
-        if (eilute.empty()) {
-            continue;
-        }
-
-        stringstream ss(eilute);
-        Studentas s;
-
-        ss >> s.vardas >> s.pavarde;
-
-        if (s.vardas.empty() || s.pavarde.empty()) {
-            continue;
-        }
-
-        vector<int> paz;
-        int x;
-
-        while (ss >> x) {
-            paz.push_back(x);
-        }
-
-        if (paz.empty()) {
-            continue;
-        }
-
-        s.egz = paz.back();
-        paz.pop_back();
-        s.paz = paz;
-        s.rez = 0;
-
-        grupe.push_back(s);
-    }
-
-    cout << "Nuskaityta studentu: " << grupe.size() << endl;
-}
-*/
 
 double mediana(const vector<int>& paz) {
     int n = paz.size();
@@ -263,94 +212,6 @@ double vidurkis(const vector<int>& paz) {
     }
     return sum * 1.0 / paz.size();
 }
-
-/* void rusiavimas(vector<Studentas>& grupe, char budas) {
-    int kriterijus;
-    while (true) {
-        cout << "Pasirinkite kriteriju pagal kuri norite rusiuoti:" << endl;
-        cout << "1 - Vardas" << endl;
-        cout << "2 - Pavarde" << endl;
-        cout << "3 - Galutinis (vidurkis arba mediana)" << endl;
-        cin >> kriterijus;
-
-        if (cin.fail()) {
-            cin.clear();
-            cin.ignore(10000, '\n');
-            cout << "Klaida: iveskite skaiciu 1-3" << endl;
-            continue;
-        }
-
-        if (kriterijus == 1 || kriterijus == 2 || kriterijus == 3) {
-            break;
-        }
-        cout << "Neteisinga ivestis. Bandykite dar karta!" << endl;
-    }
-
-    switch (kriterijus) {
-        case 1:
-            sort(grupe.begin(), grupe.end(), [](const Studentas& A, const Studentas& B) {
-                return A.vardas < B.vardas;
-            });
-            break;
-        case 2:
-            sort(grupe.begin(), grupe.end(), [](const Studentas& A, const Studentas& B) {
-                return A.pavarde < B.pavarde;
-            });
-            break;
-        case 3:
-            if (budas == 'v') {
-                sort(grupe.begin(), grupe.end(), [](const Studentas& A, const Studentas& B) {
-                    double galutinisA = 0.4 * vidurkis(A.paz) + 0.6 * A.egz;
-                    double galutinisB = 0.4 * vidurkis(B.paz) + 0.6 * B.egz;
-                    return galutinisA > galutinisB;
-                });
-            } else {
-                sort(grupe.begin(), grupe.end(), [](const Studentas& A, const Studentas& B) {
-                    double galutinisA = 0.4 * mediana(A.paz) + 0.6 * A.egz;
-                    double galutinisB = 0.4 * mediana(B.paz) + 0.6 * B.egz;
-                    return galutinisA > galutinisB;
-                });
-            }
-            break;
-    }
-}
-    */
-
-/* void padalintiStudentus(const vector<Studentas>& grupe, vector<Studentas>& vargsiukai, vector<Studentas>& kietakai, char budas) {
-    vargsiukai.clear();
-    kietakai.clear();
-
-    for (const auto& A : grupe) {
-        double nd_rez = (budas == 'm') ? mediana(A.paz) : vidurkis(A.paz);
-        double galutinis = 0.4 * nd_rez + 0.6 * A.egz;
-
-        if (galutinis < 5.0) {
-            vargsiukai.push_back(A);
-        } else {
-            kietakai.push_back(A);
-        }
-    }
-}
-*/
-
-/* void spausdintiIFaila(const vector<Studentas>& grupe, const string& failoPavadinimas, char budas) {
-    ofstream failas(failoPavadinimas);
-
-    failas << left << setw(15) << "Vardas" << setw(15) << "Pavarde" << setw(20) << "Galutinis" << endl;
-
-    failas << "---------------------------------------------" << endl;
-
-    for (const auto& A : grupe) {
-
-        double nd_rez = (budas == 'm') ? mediana(A.paz) : vidurkis(A.paz);
-        double galutinis = 0.4 * nd_rez + 0.6 * A.egz;
-
-        failas << left << setw(15) << A.vardas << setw(15) << A.pavarde << setw(20) << fixed << setprecision(2) << galutinis << endl;
-    }
-
-    failas.close();
-}
-    */
 
 void tyrimas1(const string& failoPavadinimas, int studentuKiekis, int ndKiekis) {
     cout << "Pirmo tyrimo failo kurimas: " << failoPavadinimas << endl;
